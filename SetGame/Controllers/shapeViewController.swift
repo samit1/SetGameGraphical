@@ -17,18 +17,13 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    
     @IBOutlet weak var cardGrid: UIView! {didSet {
         cardGrid.setNeedsLayout(); cardGrid.setNeedsDisplay();  updateViewFromModel()
-        
         }
     }
     
     
-    @IBAction func dealMoreCardsBtnTapped(_ sender: UIButton) {
-        game.add3CardsToPlay()
-        updateViewFromModel()
-    }
+    @IBAction func dealMoreCardsBtnTapped(_ sender: UIButton) { add3CardsInPlay() }
     
     
     @IBOutlet weak var deal3MoreCardsBtn: UIButton!
@@ -36,24 +31,33 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc func cardBtnTapped(_ recognizer : UITapGestureRecognizer) {
         guard let tapped = recognizer.view as? CardView  else {return}
         
-        
         if let selectedCard = cardsOnScreen.index(of: tapped) {
             if let card = cardsOnScreen[selectedCard].card {
                 game.cardSelected(card: card)
             }
         }
-        
-        
         updateViewFromModel()
     }
     
+    @objc func addThreeCardsOnSwipeDown(_ recognizer : UISwipeGestureRecognizer) { add3CardsInPlay() }
     
-  
+    @objc func shufleCardsOnRotationDetection (_ recognizer : UIRotationGestureRecognizer) {
+        print("rotation detecvted")
+        game.shuffleCards()
+        updateViewFromModel()
+    }
+    
+    private func add3CardsInPlay() {
+        game.add3CardsToPlay()
+        updateViewFromModel()
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()        
         cardGrid.contentMode = .redraw
         updateViewFromModel()
+        addSwipeGestureToCardGrid()
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,6 +66,12 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func updateViewFromModel() {
         removeSubviewsFromCardGrid()
+        createGridWithCards()
+        addSelectionBordersIfNeeded()
+    }
+    
+    private func createGridWithCards() {
+        
         var grid = Grid(layout: .aspectRatio(8/5), frame: cardGrid.bounds)
         grid.cellCount = game.cardsInPlay.count
         for (index, card) in game.cardsInPlay.enumerated() {
@@ -76,8 +86,13 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 cardsOnScreen.append(cardview)
             }
         }
-        addSelectionBordersIfNeeded()
     }
+    
+    
+    //TODO : Create Layout Strategy
+//    private func determineLayoutStrategy() -> Grid.Layout {
+//        if
+//    }
     
     private func removeSubviewsFromCardGrid() {
         cardGrid.subviews.forEach {$0.removeFromSuperview()}
@@ -93,5 +108,20 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         })
     }
     
+    private func addSwipeGestureToCardGrid() {
+        let swipe = UISwipeGestureRecognizer(target: self, action: #selector(addThreeCardsOnSwipeDown))
+        swipe.direction = UISwipeGestureRecognizerDirection.down
+        swipe.delegate = self
+        cardGrid.addGestureRecognizer(swipe)
+    }
+    
+    private func addRotationGestureToCardGrid() {
+        let rotation = UIRotationGestureRecognizer(target: self, action: #selector(shufleCardsOnRotationDetection))
+        rotation.delegate = self
+        cardGrid.addGestureRecognizer(rotation)
+        //        roat
+    }
+    
     
 }
+

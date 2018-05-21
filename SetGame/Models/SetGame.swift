@@ -131,7 +131,8 @@ struct SetGame {
         showFirst12Cards()
     }
     
-    mutating private func shuffleCards() {
+    mutating func shuffleCards() {
+        cardsSelected.removeAll()
         for cardIndex in stride(from: cardDeck.count - 1 , to: -1, by: -1) {
 //            print(cardIndex)
             let randomIndexToSwapWith = Int(arc4random_uniform(UInt32(cardDeck.count - 1)))
