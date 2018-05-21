@@ -22,7 +22,7 @@ class GridView: UIView {
         grid.frame = self.bounds
         for (index, card) in cardsToDisplay.enumerated() {
             if let display = grid[index] {
-                let card = CardView(frame: display, shape: card.symbol, color: card.color, num: card.num, shading: card.shading)
+                let card = CardView(frame: display, )
 //                let tap = UITapGestureRecognizer(target: , action: Selector("handleTap:"))
 //                if let shapeVC = UIViewController as? shapeViewController {
                 // TODO: Add casting to shapeViewController

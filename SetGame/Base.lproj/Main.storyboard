@@ -25,7 +25,7 @@
                                     <action selector="dealMoreCardsBtnTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="wYf-2B-DyX"/>
                                 </connections>
                             </button>
-                            <view alpha="0.69999999999999996" contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="D9t-BN-JbE" customClass="GridView" customModule="SetGame" customModuleProvider="target">
+                            <view alpha="0.69999999999999996" contentMode="center" translatesAutoresizingMaskIntoConstraints="NO" id="D9t-BN-JbE">
                                 <rect key="frame" x="8" y="28" width="359" height="581"/>
                                 <color key="backgroundColor" red="0.91929749637634783" green="1" blue="0.68490150156397678" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </view>
@@ -43,7 +43,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="cardGrid" destination="D9t-BN-JbE" id="ED8-IP-q2j"/>
+                        <outlet property="cardGrid" destination="D9t-BN-JbE" id="nbf-PV-KXN"/>
                         <outlet property="deal3MoreCardsBtn" destination="dVy-ed-sUp" id="aRu-Cm-24W"/>
                     </connections>
                 </viewController>
