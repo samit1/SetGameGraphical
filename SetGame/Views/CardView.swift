@@ -92,7 +92,5 @@ extension CardView {
     
     struct SelectionBorder {
         static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.0)]
- 
-
     }
 }

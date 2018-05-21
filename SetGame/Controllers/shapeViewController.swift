@@ -9,9 +9,14 @@
 import UIKit
 
 class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
-    private var game = SetGame()
+    private var game = SetGame() 
     private var cardsOnScreen = [CardView]()
-    private var cardsSelectedOnScreen = [CardView]()
+    private var cardsSelectedOnScreen : [Card] {
+        get {
+            return game.cardsSelected
+        }
+    }
+    
     
     @IBOutlet weak var cardGrid: UIView! {didSet {
         cardGrid.setNeedsLayout(); cardGrid.setNeedsDisplay();  updateViewFromModel()
@@ -30,11 +35,12 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     @objc func cardBtnTapped(_ recognizer : UITapGestureRecognizer) {
         guard let tapped = recognizer.view as? CardView  else {return}
+        
+        
         if let selectedCard = cardsOnScreen.index(of: tapped) {
             if let card = cardsOnScreen[selectedCard].card {
                 game.cardSelected(card: card)
             }
-            
         }
         
         
@@ -68,22 +74,24 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 
                 cardGrid.addSubview(cardview)
                 cardsOnScreen.append(cardview)
-                
-                
-                let isSelected = game.cardsSelected.contains(card)
-                if isSelected {
-                    cardview.selectState = .selected
-                } else {cardview.selectState = .unselected}
-                
-                
             }
         }
-        
+        addSelectionBordersIfNeeded()
     }
     
     private func removeSubviewsFromCardGrid() {
         cardGrid.subviews.forEach {$0.removeFromSuperview()}
     }
     
-
+    private func addSelectionBordersIfNeeded() {
+        cardsOnScreen.forEach({
+            if let card = $0.card, cardsSelectedOnScreen.contains(card)  {
+                $0.selectState = .selected
+            } else {
+                $0.selectState = .unselected
+            }
+        })
+    }
+    
+    
 }

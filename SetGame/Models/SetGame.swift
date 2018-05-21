@@ -16,7 +16,7 @@ struct SetGame {
     private (set) var cardsSelected = [Card]() {
         didSet {
             for (i,card) in cardsSelected.enumerated() {
-                print("\(i): \(card.description) ")
+//                print("\(i): \(card.description) ")
             }
         }
     }
@@ -31,7 +31,14 @@ struct SetGame {
         // Before doing anything
         // check if card is already selected
         // and check if card is a playable card
-        if cardsSelected.contains(card) || !cardsInPlay.contains(card) {return}
+        // if card is already selected by user,  remove it.
+        if cardsSelected.contains(card) {
+            cardsSelected.remove(at: cardsSelected.index(of: card)!)
+            return
+        }
+        
+        if !cardsInPlay.contains(card) {return}
+        
         if checkForSet() {
             setFound()
             //            add3CardsToPlay()
