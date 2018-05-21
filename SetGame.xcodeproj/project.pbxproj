@@ -7,11 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0F97292F20B095CA0089071D /* CardRect.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97292E20B095CA0089071D /* CardRect.swift */; };
+		0F97293120B1E8E30089071D /* SingleShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293020B1E8E30089071D /* SingleShapeView.swift */; };
+		0F97293320B1EDFB0089071D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293220B1EDFB0089071D /* CardView.swift */; };
 		0FBB350E20ADD8B7005BFBBB /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBB350C20ADD6D2005BFBBB /* Grid.swift */; };
 		0FBB351020ADDB9A005BFBBB /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBB350F20ADDB9A005BFBBB /* GridView.swift */; };
 		D6432F5B20A5B5440039706C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6432F5A20A5B5440039706C /* AppDelegate.swift */; };
-		D6432F5D20A5B5440039706C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6432F5C20A5B5440039706C /* ViewController.swift */; };
+		D6432F5D20A5B5440039706C /* shapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6432F5C20A5B5440039706C /* shapeViewController.swift */; };
 		D6432F6020A5B5440039706C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6432F5E20A5B5440039706C /* Main.storyboard */; };
 		D6432F6320A5B5440039706C /* SetGame.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6432F6120A5B5440039706C /* SetGame.xcdatamodeld */; };
 		D6432F6520A5B5480039706C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6432F6420A5B5480039706C /* Assets.xcassets */; };
@@ -41,12 +42,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0F97292E20B095CA0089071D /* CardRect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardRect.swift; sourceTree = "<group>"; };
+		0F97293020B1E8E30089071D /* SingleShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleShapeView.swift; sourceTree = "<group>"; };
+		0F97293220B1EDFB0089071D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		0FBB350C20ADD6D2005BFBBB /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		0FBB350F20ADDB9A005BFBBB /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
 		D6432F5720A5B5440039706C /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6432F5A20A5B5440039706C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		D6432F5C20A5B5440039706C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		D6432F5C20A5B5440039706C /* shapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shapeViewController.swift; sourceTree = "<group>"; };
 		D6432F5F20A5B5440039706C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D6432F6220A5B5440039706C /* SetGame.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SetGame.xcdatamodel; sourceTree = "<group>"; };
 		D6432F6420A5B5480039706C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -92,7 +94,9 @@
 			isa = PBXGroup;
 			children = (
 				0FBB350F20ADDB9A005BFBBB /* GridView.swift */,
-				0F97292E20B095CA0089071D /* CardRect.swift */,
+				0F97293220B1EDFB0089071D /* CardView.swift */,
+				0F97293020B1E8E30089071D /* SingleShapeView.swift */,
+				0FBB350C20ADD6D2005BFBBB /* Grid.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -154,7 +158,6 @@
 		D6D9CE3F20A74C6500279781 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				0FBB350C20ADD6D2005BFBBB /* Grid.swift */,
 				D681239020A5BFAF004EABD9 /* Card.swift */,
 				D681239220A5CCFF004EABD9 /* CardDeck.swift */,
 				D681239420A68A6F004EABD9 /* SetGame.swift */,
@@ -165,7 +168,7 @@
 		D6D9CE4020A74C7D00279781 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				D6432F5C20A5B5440039706C /* ViewController.swift */,
+				D6432F5C20A5B5440039706C /* shapeViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -301,13 +304,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6432F5D20A5B5440039706C /* ViewController.swift in Sources */,
+				D6432F5D20A5B5440039706C /* shapeViewController.swift in Sources */,
 				D681239320A5CCFF004EABD9 /* CardDeck.swift in Sources */,
+				0F97293120B1E8E30089071D /* SingleShapeView.swift in Sources */,
 				0FBB351020ADDB9A005BFBBB /* GridView.swift in Sources */,
+				0F97293320B1EDFB0089071D /* CardView.swift in Sources */,
 				D6432F6320A5B5440039706C /* SetGame.xcdatamodeld in Sources */,
 				D6432F5B20A5B5440039706C /* AppDelegate.swift in Sources */,
 				D681239520A68A6F004EABD9 /* SetGame.swift in Sources */,
-				0F97292F20B095CA0089071D /* CardRect.swift in Sources */,
 				0FBB350E20ADD8B7005BFBBB /* Grid.swift in Sources */,
 				D681239120A5BFAF004EABD9 /* Card.swift in Sources */,
 			);

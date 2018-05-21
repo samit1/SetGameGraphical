@@ -51,9 +51,9 @@ public struct Card : CustomStringConvertible {
     
     enum Symbol: String {
         case diamond = "diamond"
-        case squiggle = "squiggle"
+        case square = "squiggle"
         case oval = "oval"
-        static let all = [diamond,squiggle,oval]
+        static let all = [diamond,square,oval]
     }
     
     enum Shading : String {

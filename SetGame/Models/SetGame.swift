@@ -92,11 +92,12 @@ struct SetGame {
             setFound()
             
         } else {
-            if cardDeck.count >= 3 {
-                cardsInPlay.append(cardDeck.remove(at: 0))
-                cardsInPlay.append(cardDeck.remove(at: 1))
-                cardsInPlay.append(cardDeck.remove(at: 2))
+            for _ in 1...3 {
+                if cardDeck.count > 0 {
+                    cardsInPlay.append(cardDeck.remove(at: 0))
+                }
             }
+            
         }
     }
     
@@ -109,7 +110,7 @@ struct SetGame {
     }
     
     mutating private func showFirst12Cards() {
-        for _ in stride(from: 0, to: 13, by:  1) {
+        for _ in stride(from: 0, to: 12, by:  1) {
             cardsInPlay.append(cardDeck.removeFirst())
         }
     }
