@@ -109,7 +109,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // draw grids on screen
     private func createGridWithCards() {
-        var grid = Grid(layout: .dimensions(rowCount: game.cardsInPlay.count / 3 , columnCount: 4), frame: cardGrid.bounds)
+        //var grid = Grid(layout: .dimensions(rowCount: game.cardsInPlay.count / 3 , columnCount: 4), frame: cardGrid.bounds)
+        var grid = Grid(layout: .aspectRatio(8/5), frame: cardGrid.bounds)
         //var grid = Grid(layout: .aspectRatio(8/5), frame: cardGrid.bounds)
         grid.cellCount = game.cardsInPlay.count
         for (index, card) in game.cardsInPlay.enumerated() {
