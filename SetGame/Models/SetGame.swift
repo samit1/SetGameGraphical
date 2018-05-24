@@ -91,12 +91,15 @@ struct SetGame {
     // add it to the matched cards
     // removed selection
     // add 3 cards to play
+    //TODO: add protection here
     mutating private func setFound() {
         //        matchedCards += cardsSelected
         for matchSetCard in cardsSelected {
             let indexOfMatch = cardsInPlay.index(of: matchSetCard)
             if cardDeck.count > 0 {
                 cardsInPlay[indexOfMatch!] = cardDeck.remove(at: 0)
+            } else {
+                cardsInPlay.remove(at: indexOfMatch!)
             }
         }
         cardsSelected.removeAll()
