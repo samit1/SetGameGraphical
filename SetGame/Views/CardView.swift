@@ -75,6 +75,8 @@ class CardView: UIView {
     
     private var objectFrames : [CGRect] {
         var firstDrawPointx : CGFloat?
+        var firstDrawPointY: CGFloat?
+
         if let card = card {
             switch card.num {
             case .one:
@@ -91,14 +93,14 @@ class CardView: UIView {
                 let quarter = self.bounds.width / 4
                 let halfShapeWith = maxShapeDimension / 2
                 firstDrawPointx = quarter - halfShapeWith
-                
             }
+            firstDrawPointY = (self.bounds.height) / 2 - (maxShapeDimension / 2)
         }
         
         var frames = [CGRect]()
         if let num = num {
             for _ in 1...num.rawValue {
-                frames.append(CGRect(x: firstDrawPointx!, y: self.bounds.minY, width: maxShapeDimension, height: maxShapeDimension))
+                frames.append(CGRect(x: firstDrawPointx!, y: firstDrawPointY!, width: maxShapeDimension, height: maxShapeDimension))
                 firstDrawPointx! += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
             }
         }
