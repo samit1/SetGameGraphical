@@ -177,7 +177,7 @@ fileprivate extension Array where Element == Card {
 
 fileprivate extension Int {
     var randIndex : Int {
-        var maxIndex = self - 1
+        let maxIndex = self - 1
         if maxIndex < 0 {
             //            print(-Int(arc4random_uniform(UInt32(maxIndex))))
             return -Int(arc4random_uniform(UInt32(maxIndex)))

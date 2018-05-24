@@ -52,7 +52,6 @@ class CardView: UIView {
     }
     
     private var startPointX : CGFloat? {
-        var beginPoint = 0
         if let card = card {
             switch card.num {
             case .one:
@@ -67,7 +66,6 @@ class CardView: UIView {
                 let quarter = self.bounds.width / 4
                 let halfShapeWith = maxShapeDimension / 2
                 return quarter - halfShapeWith
-                
             }
         }
         return nil
