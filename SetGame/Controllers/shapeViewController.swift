@@ -24,6 +24,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // UIView that displays grid of cards on screen
     @IBOutlet weak var cardGrid: UIView! {didSet {
+        cardGrid.backgroundColor = UIColor.white
         cardGrid.setNeedsLayout(); cardGrid.setNeedsDisplay();  updateViewFromModel()
         }
     }
@@ -108,7 +109,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // draw grids on screen
     private func createGridWithCards() {
-        
+//        var grid = Grid(layout: .dimensions(rowCount: game.cardsInPlay.count / 3 , columnCount: 3), frame: cardGrid.bounds)
         var grid = Grid(layout: .aspectRatio(8/5), frame: cardGrid.bounds)
         grid.cellCount = game.cardsInPlay.count
         for (index, card) in game.cardsInPlay.enumerated() {

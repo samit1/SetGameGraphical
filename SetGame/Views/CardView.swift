@@ -42,6 +42,9 @@ class CardView: UIView {
         
         super.init(frame: frame)
         self.contentMode = .redraw
+        self.clipsToBounds = true
+        self.backgroundColor = UIColor.white
+        
     }
     
     private var maxShapeDimension : CGFloat {
@@ -114,8 +117,11 @@ class CardView: UIView {
     
     private func createBorderAroundSelf() {
         if let width = SelectionBorder.width[self.selectState] {
-            self.layer.borderColor = UIColor.blue.cgColor
             self.layer.borderWidth = width
+        }
+        
+        if let color = SelectionColor.color[self.selectState] {
+            self.layer.borderColor = color
         }
         
     }
@@ -130,6 +136,10 @@ extension CardView {
     
     
     struct SelectionBorder {
-        static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.0)]
+        static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.5)]
+    }
+    
+    struct SelectionColor {
+        static let color : [selectionState : CGColor] = [.selected: UIColor.blue.cgColor, .unselected: UIColor.black.cgColor]
     }
 }
