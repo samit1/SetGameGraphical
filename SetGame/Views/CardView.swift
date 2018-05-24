@@ -41,33 +41,48 @@ class CardView: UIView {
         self.shading = card.shading
         
         super.init(frame: frame)
-        self.contentMode = .center
+        self.contentMode = .redraw
     }
     
     private var maxShapeDimension : CGFloat {
         return self.bounds.width / 4
     }
     
-    private var objectFrames : [CGRect] {
-        var firstDrawPointx = self.bounds.minX
-        var frames = [CGRect]()
-        if let num = num {
-            for _ in 1...num.rawValue {
-                frames.append(CGRect(x: firstDrawPointx, y: self.bounds.minY, width: maxShapeDimension, height: maxShapeDimension))
-                firstDrawPointx += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
-            }
-        }
-        return frames
-    }
+//    private var objectFrames : [CGRect] {
+//        var firstDrawPointx = self.bounds.minX
+//        var frames = [CGRect]()
+//        if let num = num {
+//            for _ in 1...num.rawValue {
+//                frames.append(CGRect(x: firstDrawPointx, y: self.bounds.minY, width: maxShapeDimension, height: maxShapeDimension))
+//                firstDrawPointx += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
+//            }
+//        }
+//        return frames
+//    }
     
     override func draw(_ rect: CGRect) {
-        for objectFrame in objectFrames {
-            if let shape = shape, let color = color, let shading = shading {
-                let object = SingleShapeView(frame: objectFrame, shape: shape, color: color, shading: shading)
-                self.addSubview(object)
+        
+        var grid = Grid(layout: .fixedCellSize(CGSize(width: maxShapeDimension, height: maxShapeDimension)), frame: self.bounds)
+        if let card = card {
+          //  print(card.num.rawValue)
+            print(grid.cellCount)
+            grid.cellCount = card.num.rawValue
+            for cellIndex in 0..<card.num.rawValue {
+                //print(grid.cellCount)
+                if let displayBounds = grid[cellIndex] {
+                    let object = SingleShapeView(frame: displayBounds, shape: card.symbol, color: card.color, shading: card.shading)
+                    self.addSubview(object)
+                }
             }
         }
-        createBorderAroundSelf()
+        
+        //        for objectFrame in objectFrames {
+        //            if let shape = shape, let color = color, let shading = shading {
+        //                let object = SingleShapeView(frame: objectFrame, shape: shape, color: color, shading: shading)
+        //                self.addSubview(object)
+        //            }
+        //        }
+        //        createBorderAroundSelf()
     }
     
     private func createBorderAroundSelf() {

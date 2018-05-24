@@ -21,7 +21,7 @@ struct SetGame {
     private (set) var cardsInPlay = [Card]() {
         didSet {
             for (i,card) in cardsInPlay.enumerated() {
-                print("\(i): \(card.description) ")
+                //                print("\(i): \(card.description) ")
             }
         }
     }
@@ -95,7 +95,9 @@ struct SetGame {
         //        matchedCards += cardsSelected
         for matchSetCard in cardsSelected {
             let indexOfMatch = cardsInPlay.index(of: matchSetCard)
-            cardsInPlay[indexOfMatch!] = cardDeck.remove(at: 0)
+            if cardDeck.count > 0 {
+                cardsInPlay[indexOfMatch!] = cardDeck.remove(at: 0)
+            }
         }
         cardsSelected.removeAll()
         //        print("found set")
@@ -157,7 +159,7 @@ struct SetGame {
 
 // TODO : Add an extension for arc4random
 fileprivate extension Array where Element == Card {
-     func shuffleCards() -> [Card] {
+    func shuffleCards() -> [Card] {
         var shuffledCards = self
         for cardIndex in stride(from: shuffledCards.count - 1 , to: -1, by: -1) {
             //let randomIndexToSwapWith = Int(arc4random_uniform(UInt32(shuffledCards.count - 1)))
@@ -174,11 +176,11 @@ fileprivate extension Int {
     var randIndex : Int {
         var maxIndex = self - 1
         if maxIndex < 0 {
-            print(-Int(arc4random_uniform(UInt32(maxIndex))))
+            //            print(-Int(arc4random_uniform(UInt32(maxIndex))))
             return -Int(arc4random_uniform(UInt32(maxIndex)))
             
         } else if maxIndex > 0 {
-            print(Int(arc4random_uniform(UInt32(maxIndex))))
+            //            print(Int(arc4random_uniform(UInt32(maxIndex))))
             return Int(arc4random_uniform(UInt32(maxIndex)))
         } else {
             return 0
