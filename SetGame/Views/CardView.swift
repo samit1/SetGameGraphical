@@ -86,9 +86,6 @@ extension CardView {
         static let betweenShapesProportion = CGFloat(1) / CGFloat(40)
     }
     
-    // TODO: make a dictionary
-    
-    //    static let shapes: [Card.Shape: String] = [.circle: "●", .triangle: "▲", .square: "■"]
     
     struct SelectionBorder {
         static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.0)]
