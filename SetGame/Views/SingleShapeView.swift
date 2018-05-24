@@ -19,6 +19,7 @@ class SingleShapeView: UIView {
         self.color = color
         self.shading = shading
         super.init(frame: frame)
+        self.contentMode = .redraw
         self.backgroundColor = UIColor.white
         self.layer.borderWidth = 0 
         self.layer.borderColor = UIColor.clear.cgColor
