@@ -28,7 +28,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    // MARK: Application Lifecycles Functions
+    // MARK: Application Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()

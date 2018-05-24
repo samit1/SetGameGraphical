@@ -48,41 +48,68 @@ class CardView: UIView {
         return self.bounds.width / 4
     }
     
-//    private var objectFrames : [CGRect] {
-//        var firstDrawPointx = self.bounds.minX
-//        var frames = [CGRect]()
-//        if let num = num {
-//            for _ in 1...num.rawValue {
-//                frames.append(CGRect(x: firstDrawPointx, y: self.bounds.minY, width: maxShapeDimension, height: maxShapeDimension))
-//                firstDrawPointx += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
-//            }
-//        }
-//        return frames
-//    }
-    
-    override func draw(_ rect: CGRect) {
-        
-        var grid = Grid(layout: .fixedCellSize(CGSize(width: maxShapeDimension, height: maxShapeDimension)), frame: self.bounds)
+    private var startPointX : CGFloat? {
+        var beginPoint = 0
         if let card = card {
-          //  print(card.num.rawValue)
-            print(grid.cellCount)
-            grid.cellCount = card.num.rawValue
-            for cellIndex in 0..<card.num.rawValue {
-                //print(grid.cellCount)
-                if let displayBounds = grid[cellIndex] {
-                    let object = SingleShapeView(frame: displayBounds, shape: card.symbol, color: card.color, shading: card.shading)
-                    self.addSubview(object)
-                }
+            switch card.num {
+            case .one:
+                return self.bounds.width / 2
+            case .two:
+                let quarter = self.bounds.width / 4
+                let half = self.bounds.width / 2
+                let betweenQuarterAndHalf = ((half - quarter) / 2) + quarter
+                let halfShapeWidth = maxShapeDimension / 2
+                return betweenQuarterAndHalf - halfShapeWidth
+            case .three:
+                let quarter = self.bounds.width / 4
+                let halfShapeWith = maxShapeDimension / 2
+                return quarter - halfShapeWith
+                
+            }
+        }
+        return nil
+    }
+    
+    private var objectFrames : [CGRect] {
+        var firstDrawPointx : CGFloat?
+        if let card = card {
+            switch card.num {
+            case .one:
+                let half = self.bounds.width / 2
+                let halfShapeWidth = maxShapeDimension / 2
+                firstDrawPointx = half - halfShapeWidth
+            case .two:
+                let quarter = self.bounds.width / 4
+                let half = self.bounds.width / 2
+                let betweenQuarterAndHalf = ((half - quarter) / 2) + quarter
+                let halfShapeWidth = maxShapeDimension / 2
+                firstDrawPointx = betweenQuarterAndHalf - halfShapeWidth
+            case .three:
+                let quarter = self.bounds.width / 4
+                let halfShapeWith = maxShapeDimension / 2
+                firstDrawPointx = quarter - halfShapeWith
+                
             }
         }
         
-        //        for objectFrame in objectFrames {
-        //            if let shape = shape, let color = color, let shading = shading {
-        //                let object = SingleShapeView(frame: objectFrame, shape: shape, color: color, shading: shading)
-        //                self.addSubview(object)
-        //            }
-        //        }
-        //        createBorderAroundSelf()
+        var frames = [CGRect]()
+        if let num = num {
+            for _ in 1...num.rawValue {
+                frames.append(CGRect(x: firstDrawPointx!, y: self.bounds.minY, width: maxShapeDimension, height: maxShapeDimension))
+                firstDrawPointx! += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
+            }
+        }
+        return frames
+    }
+    
+    override func draw(_ rect: CGRect) {
+        for objectFrame in objectFrames {
+            if let shape = shape, let color = color, let shading = shading {
+                let object = SingleShapeView(frame: objectFrame, shape: shape, color: color, shading: shading)
+                self.addSubview(object)
+            }
+        }
+        createBorderAroundSelf()
     }
     
     private func createBorderAroundSelf() {
