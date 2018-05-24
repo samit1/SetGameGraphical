@@ -39,12 +39,20 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         updateViewFromModel()
     }
     
-    @objc func addThreeCardsOnSwipeDown(_ recognizer : UISwipeGestureRecognizer) { add3CardsInPlay() }
+    @objc func addThreeCardsOnSwipeDown(_ recognizer : UISwipeGestureRecognizer) {
+       // guard (recognizer.view as? CardView) != nil else {return}
+        add3CardsInPlay()
+    }
     
     @objc func shufleCardsOnRotationDetection (_ recognizer : UIRotationGestureRecognizer) {
+
         print("rotation detecvted")
-        game.shuffleCards()
-        updateViewFromModel()
+        if recognizer.state == .ended {
+            game.shuffleCards(type: .cardsOnTable)
+            updateViewFromModel()
+        }
+        
+        
     }
     
     private func add3CardsInPlay() {
@@ -58,6 +66,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         cardGrid.contentMode = .redraw
         updateViewFromModel()
         addSwipeGestureToCardGrid()
+        addRotationGestureToCardGrid()
     }
     
     override func viewDidLayoutSubviews() {
@@ -117,9 +126,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     private func addRotationGestureToCardGrid() {
         let rotation = UIRotationGestureRecognizer(target: self, action: #selector(shufleCardsOnRotationDetection))
+        cardGrid.isUserInteractionEnabled = true
         rotation.delegate = self
         cardGrid.addGestureRecognizer(rotation)
-        //        roat
     }
     
     

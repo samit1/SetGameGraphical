@@ -9,18 +9,31 @@
 import Foundation
 
 struct SetGame {
+    enum shuffleType {
+        case allCards
+        case cardsOnTable
+    }
+    
+    
+    
     var cardDeck = CardDeck().cardSet
     
-    private (set) var cardsInPlay = [Card]()
+    private (set) var cardsInPlay = [Card]() {
+        didSet {
+            for (i,card) in cardsInPlay.enumerated() {
+                print("\(i): \(card.description) ")
+            }
+        }
+    }
     //    private (set) var matchedCards = [Card]()
     private (set) var cardsSelected = [Card]() {
         didSet {
             for (i,card) in cardsSelected.enumerated() {
-//                print("\(i): \(card.description) ")
+                //                print("\(i): \(card.description) ")
             }
         }
     }
-
+    
     mutating func cardSelected(card: Card) {
         //add card in card selected
         
@@ -85,7 +98,7 @@ struct SetGame {
             cardsInPlay[indexOfMatch!] = cardDeck.remove(at: 0)
         }
         cardsSelected.removeAll()
-//        print("found set")
+        //        print("found set")
     }
     
     mutating func add3CardsToPlay() {
@@ -111,7 +124,7 @@ struct SetGame {
     init() {
         startNewGame()
         for x in cardDeck {
-//            print(x.description)
+            //            print(x.description)
         }
         
     }
@@ -127,18 +140,48 @@ struct SetGame {
         cardsInPlay.removeAll()
         cardsSelected.removeAll()
         cardDeck = CardDeck().cardSet
-        shuffleCards()
+        shuffleCards(type: .allCards)
         showFirst12Cards()
     }
     
-    mutating func shuffleCards() {
-        cardsSelected.removeAll()
-        for cardIndex in stride(from: cardDeck.count - 1 , to: -1, by: -1) {
-//            print(cardIndex)
-            let randomIndexToSwapWith = Int(arc4random_uniform(UInt32(cardDeck.count - 1)))
-            let tmp = cardDeck[randomIndexToSwapWith] //this is the random one we swap with
-            cardDeck[randomIndexToSwapWith] = cardDeck[cardIndex]
-            cardDeck[cardIndex] = tmp
+    mutating func shuffleCards(type : shuffleType) {
+        switch type {
+        case .allCards:
+            cardDeck = cardDeck.shuffleCards()
+        case .cardsOnTable:
+            cardsInPlay = cardsInPlay.shuffleCards()
+        }
+    }
+}
+
+
+// TODO : Add an extension for arc4random
+fileprivate extension Array where Element == Card {
+     func shuffleCards() -> [Card] {
+        var shuffledCards = self
+        for cardIndex in stride(from: shuffledCards.count - 1 , to: -1, by: -1) {
+            //let randomIndexToSwapWith = Int(arc4random_uniform(UInt32(shuffledCards.count - 1)))
+            let randomIndexToSwapWith = shuffledCards.count.randIndex
+            let tmp = shuffledCards[randomIndexToSwapWith] //this is the random one we swap with
+            shuffledCards[randomIndexToSwapWith] = shuffledCards[cardIndex]
+            shuffledCards[cardIndex] = tmp
+        }
+        return shuffledCards
+    }
+}
+
+fileprivate extension Int {
+    var randIndex : Int {
+        var maxIndex = self - 1
+        if maxIndex < 0 {
+            print(-Int(arc4random_uniform(UInt32(maxIndex))))
+            return -Int(arc4random_uniform(UInt32(maxIndex)))
+            
+        } else if maxIndex > 0 {
+            print(Int(arc4random_uniform(UInt32(maxIndex))))
+            return Int(arc4random_uniform(UInt32(maxIndex)))
+        } else {
+            return 0
         }
     }
 }
