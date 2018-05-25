@@ -107,6 +107,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         addSelectionBordersIfNeeded()
     }
     
+    
     // draw grids on screen
     private func createGridWithCards() {
         //var grid = Grid(layout: .dimensions(rowCount: game.cardsInPlay.count / 3 , columnCount: 4), frame: cardGrid.bounds)
@@ -123,6 +124,29 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 cardGrid.addSubview(cardview)
                 cardsOnScreen.append(cardview)
             }
+        }
+        
+        flyIn()
+    }
+    
+    private func flyIn() {
+        for (index,cardView) in cardsOnScreen.enumerated() {
+            let cardViewCoordinates = CGPoint(x: cardView.frame.minX, y: cardView.frame.minY) // this gives us the upper left most point of the cardView
+            
+            cardView.center = {
+                let x  = cardGrid.frame.minX + cardView.frame.width / 2
+                let y = cardGrid.frame.maxY - cardView.frame.height
+                return CGPoint(x: x, y: y)
+            }()
+            
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 0.6,
+                delay: Double(index) / 80,
+                options: [.curveEaseIn],
+                animations:  {[unowned cardView, cardViewCoordinates] in
+                    cardView.frame = CGRect(origin: cardViewCoordinates, size: cardView.frame.size)
+            })
+            
         }
     }
     
