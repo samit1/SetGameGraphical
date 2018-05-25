@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		0F97293120B1E8E30089071D /* SingleShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293020B1E8E30089071D /* SingleShapeView.swift */; };
-		0F97293320B1EDFB0089071D /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293220B1EDFB0089071D /* CardView.swift */; };
+		0F97293320B1EDFB0089071D /* SetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293220B1EDFB0089071D /* SetCardView.swift */; };
 		0FBB350E20ADD8B7005BFBBB /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBB350C20ADD6D2005BFBBB /* Grid.swift */; };
+		0FE5BF6B20B8B14B0036B028 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FE5BF6A20B8B14B0036B028 /* CardView.swift */; };
 		D6432F5B20A5B5440039706C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6432F5A20A5B5440039706C /* AppDelegate.swift */; };
 		D6432F5D20A5B5440039706C /* shapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6432F5C20A5B5440039706C /* shapeViewController.swift */; };
 		D6432F6020A5B5440039706C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D6432F5E20A5B5440039706C /* Main.storyboard */; };
@@ -42,8 +43,9 @@
 
 /* Begin PBXFileReference section */
 		0F97293020B1E8E30089071D /* SingleShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleShapeView.swift; sourceTree = "<group>"; };
-		0F97293220B1EDFB0089071D /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		0F97293220B1EDFB0089071D /* SetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardView.swift; sourceTree = "<group>"; };
 		0FBB350C20ADD6D2005BFBBB /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		0FE5BF6A20B8B14B0036B028 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		D6432F5720A5B5440039706C /* SetGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SetGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6432F5A20A5B5440039706C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6432F5C20A5B5440039706C /* shapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = shapeViewController.swift; sourceTree = "<group>"; };
@@ -91,7 +93,8 @@
 		0FBB350B20ADD6CD005BFBBB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0F97293220B1EDFB0089071D /* CardView.swift */,
+				0FE5BF6A20B8B14B0036B028 /* CardView.swift */,
+				0F97293220B1EDFB0089071D /* SetCardView.swift */,
 				0F97293020B1E8E30089071D /* SingleShapeView.swift */,
 				0FBB350C20ADD6D2005BFBBB /* Grid.swift */,
 			);
@@ -124,12 +127,12 @@
 				D6432F5E20A5B5440039706C /* Main.storyboard */,
 				D6D9CE4020A74C7D00279781 /* Controllers */,
 				0FBB350B20ADD6CD005BFBBB /* Views */,
-				D6432F5A20A5B5440039706C /* AppDelegate.swift */,
 				D6D9CE3F20A74C6500279781 /* Models */,
 				D6432F6420A5B5480039706C /* Assets.xcassets */,
 				D6432F6620A5B5480039706C /* LaunchScreen.storyboard */,
 				D6432F6920A5B5480039706C /* Info.plist */,
 				D6432F6120A5B5440039706C /* SetGame.xcdatamodeld */,
+				D6432F5A20A5B5440039706C /* AppDelegate.swift */,
 			);
 			path = SetGame;
 			sourceTree = "<group>";
@@ -304,9 +307,10 @@
 				D6432F5D20A5B5440039706C /* shapeViewController.swift in Sources */,
 				D681239320A5CCFF004EABD9 /* CardDeck.swift in Sources */,
 				0F97293120B1E8E30089071D /* SingleShapeView.swift in Sources */,
-				0F97293320B1EDFB0089071D /* CardView.swift in Sources */,
+				0F97293320B1EDFB0089071D /* SetCardView.swift in Sources */,
 				D6432F6320A5B5440039706C /* SetGame.xcdatamodeld in Sources */,
 				D6432F5B20A5B5440039706C /* AppDelegate.swift in Sources */,
+				0FE5BF6B20B8B14B0036B028 /* CardView.swift in Sources */,
 				D681239520A68A6F004EABD9 /* SetGame.swift in Sources */,
 				0FBB350E20ADD8B7005BFBBB /* Grid.swift in Sources */,
 				D681239120A5BFAF004EABD9 /* Card.swift in Sources */,

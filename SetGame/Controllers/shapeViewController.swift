@@ -12,8 +12,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Model variables
     private var game = SetGame() 
-    private var cardsOnScreen = [CardView]()
+    private var cardsOnScreen = [SetCardView]()
     private var cardsSelectedOnScreen : [Card] {get {return game.cardsSelected}}
+    
     
     
     // MARK: Outlets
@@ -55,7 +56,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // notifies model what card was tapped
     // view gets updated
     @objc func cardBtnTapped(_ recognizer : UITapGestureRecognizer) {
-        guard let tapped = recognizer.view as? CardView  else {return}
+        guard let tapped = recognizer.view as? SetCardView  else {return}
         
         if let selectedCard = cardsOnScreen.index(of: tapped) {
             if let card = cardsOnScreen[selectedCard].card {
@@ -116,18 +117,27 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         grid.cellCount = game.cardsInPlay.count
         for (index, card) in game.cardsInPlay.enumerated() {
             if let display = grid[index] {
-                let cardview = CardView(frame: display, card: card)
+                let cardview = SetCardView(frame: display, card: card)
                 let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
                 tap.delegate = self
                 cardview.addGestureRecognizer(tap)
                 cardview.contentMode = .redraw
                 cardGrid.addSubview(cardview)
-                cardsOnScreen.append(cardview)
-            }
+                UIViewPropertyAnimator.runningPropertyAnimator(
+                    withDuration: 0.6,
+                    delay: 0.0,
+                    options: .curveEaseIn,
+                    animations: {
+                        self.cardsOnScreen.append(cardview)
+                        }
+                    //completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
+                
+            )
         }
         
-        flyIn()
     }
+    }
+    
     
     private func flyIn() {
         for (index,cardView) in cardsOnScreen.enumerated() {
