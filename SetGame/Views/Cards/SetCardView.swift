@@ -28,29 +28,6 @@ class SetCardView: CardView {
     }
     
     
-    // MARK: Initialization Methods
-    
-    /// TODO: Fix initalization stuff
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//    }
-//
-//    convenience init(card: Card) {
-//        self.init(frame: CGRect.zero)
-//        self.card = card
-//        //super.init()
-//        self.contentMode = .redraw
-//        self.clipsToBounds = true
-//        self.backgroundColor = UIColor.white
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//
-//
-    
-    
     // MARK: Dimensions, Positioning, and Spacing
     
     /// A maximum dimension must be
@@ -122,10 +99,9 @@ class SetCardView: CardView {
         }
 //       self.backgroundColor = UIColor.white
     }
-    
+
     /// Draws the back of the card
     /// ...which is just setting the view to a color
-    
     override func drawBack() {
         self.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
     }

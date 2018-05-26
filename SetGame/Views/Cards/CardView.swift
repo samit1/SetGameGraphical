@@ -40,7 +40,7 @@ class CardView: UIView {
     // MARK: Drawing
     
     override func draw(_ rect: CGRect) {
-        
+        self.layer.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         layer.cornerRadius = 12.0
         
