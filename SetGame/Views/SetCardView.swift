@@ -8,96 +8,90 @@
 
 import UIKit
 
-class SetCardView: UIView {
-    private (set) var card: Card?
-    private var shape : Card.Symbol?
-    private var color : Card.Color?
-    private var num: Card.Number?
-    private var shading: Card.Shading?
+/// The view responsible for displaying a single card
+
+@IBDesignable
+class SetCardView: CardView {
     
-    var selectState : selectionState = .unselected  { didSet {setNeedsLayout(); setNeedsDisplay() } }
-    
-    
-    enum selectionState {
-        case selected
-        case unselected
+    /// The card that is displayed
+    private (set) var card: Card? {
+        didSet {
+            setNeedsDisplay()
+        }
     }
-    
-    
     
     override var description: String {
-        return "shape: \(String(describing: shape)) + \(String(describing: color)) + \(String(describing: num)) + \(String(describing: shading))"
+        guard let card = card else {return "empty"}
+        
+        
+        return "shape: \(String(card.symbol.description )) + \(String(describing: card.color.description)) + \(String(describing: card.num.description)) + \(String(describing: card.shading.description))"
     }
     
+    
+    // MARK: Initialization Methods
+    
+    /// TODO: Fix initalization stuff
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     init(frame: CGRect, card: Card) {
         self.card = card
-        self.shape = card.symbol
-        self.color = card.color
-        self.num = card.num
-        self.shading = card.shading
-        
         super.init(frame: frame)
         self.contentMode = .redraw
         self.clipsToBounds = true
         self.backgroundColor = UIColor.white
-        
     }
     
+    
+    // MARK: Dimensions
+    
+    /// A maximum dimension must be
+    /// used to determine spacing in between shapes.
+    /// this is a computed helper variable
     private var maxShapeDimension : CGFloat {
         return self.bounds.width / 4
     }
     
+    /**
+        Drawing must begin in a certain place to guarantee it will be centered
+     
+     ##*Scenarios*
+     - One Symbol: Begin drawing at halfway - minus half of the shape width.
+     - Two Symbols: Begin drawing between the quarter and half way - minus half of the shape width.
+     - Three Symbols: Begin drawing between three quarters of the way - minus half of the shape width.
+     */
     private var startPointX : CGFloat? {
         if let card = card {
+            let halfShapeWidth = maxShapeDimension / 2
             switch card.num {
             case .one:
-                return self.bounds.width / 2
+                return self.bounds.width / 2 - halfShapeWidth
             case .two:
                 let quarter = self.bounds.width / 4
                 let half = self.bounds.width / 2
                 let betweenQuarterAndHalf = ((half - quarter) / 2) + quarter
-                let halfShapeWidth = maxShapeDimension / 2
                 return betweenQuarterAndHalf - halfShapeWidth
             case .three:
                 let quarter = self.bounds.width / 4
-                let halfShapeWith = maxShapeDimension / 2
-                return quarter - halfShapeWith
+                return quarter - halfShapeWidth
             }
         }
         return nil
     }
     
+    /// Computes object frames required for each symbol
+    
     private var objectFrames : [CGRect] {
         var firstDrawPointx : CGFloat?
         var firstDrawPointY: CGFloat?
-
-        if let card = card {
-            switch card.num {
-            case .one:
-                let half = self.bounds.width / 2
-                let halfShapeWidth = maxShapeDimension / 2
-                firstDrawPointx = half - halfShapeWidth
-            case .two:
-                let quarter = self.bounds.width / 4
-                let half = self.bounds.width / 2
-                let betweenQuarterAndHalf = ((half - quarter) / 2) + quarter
-                let halfShapeWidth = maxShapeDimension / 2
-                firstDrawPointx = betweenQuarterAndHalf - halfShapeWidth
-            case .three:
-                let quarter = self.bounds.width / 4
-                let halfShapeWith = maxShapeDimension / 2
-                firstDrawPointx = quarter - halfShapeWith
-            }
-            firstDrawPointY = (self.bounds.height) / 2 - (maxShapeDimension / 2)
-        }
-        
         var frames = [CGRect]()
-        if let num = num {
-            for _ in 1...num.rawValue {
+        
+        if let card = card {
+            firstDrawPointx = startPointX
+            firstDrawPointY = (self.bounds.height) / 2 - (maxShapeDimension / 2)
+        
+            for _ in 1...card.num.rawValue {
                 frames.append(CGRect(x: firstDrawPointx!, y: firstDrawPointY!, width: maxShapeDimension, height: maxShapeDimension))
                 firstDrawPointx! += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
             }
@@ -108,40 +102,32 @@ class SetCardView: UIView {
     override func draw(_ rect: CGRect) {
         
         for objectFrame in objectFrames {
-            if let shape = shape, let color = color, let shading = shading {
-                let object = SingleShapeView(frame: objectFrame, shape: shape, color: color, shading: shading)
+            if let card = card {
+                let object = SingleShapeView(frame: objectFrame, shape: card.symbol, color: card.color, shading: card.shading)
                 self.addSubview(object)
             }
         }
-        createBorderAroundSelf()
     }
     
     
-    private func createBorderAroundSelf() {
-        if let width = SelectionBorder.width[self.selectState] {
-            self.layer.borderWidth = width
-        }
-        
-        if let color = SelectionColor.color[self.selectState] {
-            self.layer.borderColor = color
-        }
-        
-    }
+    
 }
 
 
 
-fileprivate extension SetCardView {
-    struct Padding {
-        static let betweenShapesProportion = CGFloat(1) / CGFloat(40)
-    }
-    
-    
-    struct SelectionBorder {
-        static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.5)]
-    }
-    
-    struct SelectionColor {
-        static let color : [selectionState : CGColor] = [.selected: UIColor.blue.cgColor, .unselected: UIColor.black.cgColor]
-    }
+private struct Padding {
+    static let betweenShapesProportion = CGFloat(1) / CGFloat(40)
 }
+
+    
+
+//
+//
+//    struct SelectionBorder {
+//        static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.5)]
+//    }
+//
+//    struct SelectionColor {
+//        static let color : [selectionState : CGColor] = [.selected: UIColor.blue.cgColor, .unselected: UIColor.black.cgColor]
+//    }
+

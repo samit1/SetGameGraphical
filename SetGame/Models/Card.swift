@@ -40,7 +40,7 @@ public struct Card : CustomStringConvertible {
      Each possible combination of features (e.g., a card with three striped green diamonds)
      appears precisely once in the deck.
      */
-    enum Number: Int {
+    enum Number: Int, CustomStringConvertible {
         case one = 1
         case two
         case three
@@ -49,24 +49,27 @@ public struct Card : CustomStringConvertible {
         
     }
     
-    enum Symbol: String {
+    enum Symbol: String, CustomStringConvertible {
         case diamond = "diamond"
         case square = "squiggle"
         case oval = "oval"
+        var description: String {return String(rawValue)}
         static let all = [diamond,square,oval]
     }
     
-    enum Shading : String {
+    enum Shading : String, CustomStringConvertible {
         case solid = "solid"
         case striped = "striped"
         case open = "open"
+        var description: String {return String(rawValue)}
         static let all = [solid, striped, open]
     }
     
-    enum Color : String {
+    enum Color : String, CustomStringConvertible {
         case red = "red"
         case green = "green"
         case purple = "purple"
+        var description: String {return String(rawValue)}
         static let all = [red, green, purple]
     }
     

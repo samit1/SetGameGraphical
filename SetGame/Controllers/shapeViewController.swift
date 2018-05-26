@@ -169,9 +169,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     private func addSelectionBordersIfNeeded() {
         cardsOnScreen.forEach({
             if let card = $0.card, cardsSelectedOnScreen.contains(card)  {
-                $0.selectState = .selected
+                $0.selectState = true
             } else {
-                $0.selectState = .unselected
+                $0.selectState = false
             }
         })
     }

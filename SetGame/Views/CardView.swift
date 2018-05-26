@@ -7,10 +7,11 @@
 //
 
 import UIKit
-
+// Generic Card functionality
+@IBDesignable
 class CardView: UIView {
     
-    // The CardView default to selected
+    /// The CardView default to selected
     @IBInspectable var selectState : Bool = true {
         didSet {
             if selectState {
@@ -22,7 +23,7 @@ class CardView: UIView {
         }
     }
     
-    // The CardView can be flipped up or not flipped up
+    /// The CardView can be flipped up or not flipped up
     @IBInspectable var isFlippedUp: Bool = true {
         didSet {
             if isFlippedUp {
@@ -44,16 +45,17 @@ class CardView: UIView {
             drawFront()
         } else {
             drawBack()
+            print("back drawn")
         }
         
         
         
     }
     
-    // Draws the front of the card
+    /// Draws the front of the card
     func drawFront() {}
     
-    // Draws the back of the card
+    /// Draws the back of the card
     func drawBack() {}
     
 }
