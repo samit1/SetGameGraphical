@@ -15,14 +15,14 @@ struct CardDeck {
      -- symbol (diamond, squiggle, oval);
      -- shading (solid, striped, or open);
      -- and color (red, green, or purple).
-    
+     
      Each possible combination of features (e.g., a card with three striped green diamonds)
      appears precisely once in the deck.
-    */
-    private (set) var cardSet = [Card]()
-
-//
-    init() {
+     */
+    
+    
+    static  func generateDeckOfCards() -> [Card] {
+        var cardSet = [Card]()
         for num in Card.Number.all {
             for symbol in Card.Symbol.all {
                 for shading in Card.Shading.all {
@@ -32,5 +32,7 @@ struct CardDeck {
                 }
             }
         }
+        return cardSet
+
     }
 }

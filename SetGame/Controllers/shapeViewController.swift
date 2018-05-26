@@ -57,8 +57,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     @objc func cardBtnTapped(_ recognizer : UITapGestureRecognizer) {
         guard let tapped = recognizer.view as? SetCardView  else {return}
         
-        if let selectedCard = cardsOnScreen.index(of: tapped) {
-            if let card = cardsOnScreen[selectedCard].card {
+        if let selectedCard = game.cardsInPlay.index(of: tapped) {
+            if let card = game.cardsInPlay[selectedCard].card {
                 game.cardSelected(card: card)
             }
         }

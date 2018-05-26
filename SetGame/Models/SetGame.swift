@@ -16,7 +16,7 @@ struct SetGame {
     
     
     /// The deck of cards
-    private (set) var deck = CardDeck().cardSet
+    private (set) var deck = CardDeck.generateDeckOfCards()
     
     
     /// The cards that are currently in play
@@ -28,7 +28,7 @@ struct SetGame {
             }
         }
     }
-
+    
     /// The selected cards are used to determine whether
     /// a set of cards is a Set
     private (set) var cardsSelected = [Card]() {
@@ -39,104 +39,100 @@ struct SetGame {
         }
     }
     
-    /// The cards that were matched.
+    /// The deck of cards that were matched.
     /// These cards are a Set
     /// - Note: A matched set contains 3 cards
-    private (set) var matchedCards = [[Card]]()
+    private (set) var matchedCardsDeck = [[Card]]()
     
+    /// The last matched set
+    /// Used as a convenience for a Controller
+    /// This variable is in charge of appending its results to the matchedCardsDeck
+    private (set) var lastMatchedSet = [Card]() {
+        didSet {
+            if lastMatchedSet.count == 3 {
+                matchedCardsDeck.append(lastMatchedSet)
+            }
+        }
+    }
+    
+    
+    
+    /// Reads in a card selected by a userz
+    /// The following steps are performed:
+    ///        * The card has membership in cardsInPlay (i.e., the card is a card on the table).
+    ///        * Determines whether a card should be selected/unselected.
+    ///        * Checks if there are 3 cards in the selection. Appropriates them to matchedCards if needed.
+    /// - Note: Cards are only checked if they are a set after there are already
+    /// 3 cards in the selection.
     mutating func cardSelected(card: Card) {
-        //add card in card selected
+        guard cardsInPlay.contains(card) else {return} /// validate card is on the table
         
-        // if we already have 3, check for set or not set.
-        // if set, then add to matchedcards. then replace the 3 (if possible). Don't add itself twice.
-        //
-        
-        // Before doing anything
-        // check if card is already selected
-        // and check if card is a playable card
-        // if card is already selected by user,  remove it.
-        if cardsSelected.contains(card) {
-            cardsSelected.remove(at: cardsSelected.index(of: card)!)
+        /// Remove all elements if there are 3
+        /// Prevents user from deselecting the third card and just adding another one (cheating)
+        guard cardsSelected.count != 3 else {
+            cardsSelected.removeAll()
             return
         }
         
-        if !cardsInPlay.contains(card) {return}
+        /// Handle whether there should be an unselection
+        if cardsSelected.contains(card), let indexOfSelection = cardsSelected.index(of: card) {
+            cardsSelected.remove(at: indexOfSelection)
+            return
+        }
         
-        if checkForSet() {
-            setFound()
-            //            add3CardsToPlay()
-        } else {
-            // if cards are not set
-            // then clear selection
-            // and add new card as first element in selection
-            if cardsSelected.count == 3 {
-                cardsSelected.removeAll()
-                cardsSelected.append(card)
-            } else {
-                cardsSelected.append(card)
-            }
-        }
-    }
-    
-    private func checkForSet() -> Bool {
-        // we can only have 3 total cards.
-        // A set is matched so long as you don't have 2 of one type of card
-        // So, we can pull the type in the card with the map function, and put into an array
-        // If the unique count of the set is 2, that means that 3 of our cards had 2 unique values.
-        // Per the rules of the game Set, if you can sort a group of three cards into two of _ and one of _ then it is not a set.
+        /// Add card to selection
+        cardsSelected.append(card)
         
-        if cardsSelected.count == 3 {
-            //            let a  = cardsSelected.map {cardsSelected[$0.color.rawValue}
-            let num = Set(cardsSelected.map {$0.num}).count
-            let symbol = Set(cardsSelected.map {$0.symbol}).count
-            let shading = Set(cardsSelected.map {$0.shading}).count
-            let color = Set(cardsSelected.map {$0.color}).count
-            
-            return true //num != 2 && symbol != 2 && shading != 2 && color != 2
+        /// If there are 3 cards, check for a set
+        /// If true: then
+        ///     * Update lastMatchedSet to include the most recent match
+        ///     * Clear selected cards
+        ///     * Draw new cards for matched cards
+        if cardsSelected.count == 3, checkForSet(cards: cardsSelected) {
+            lastMatchedSet = cardsSelected
+            cardsSelected.removeAll()
+            dealCards()
         }
-        return false
     }
     
-    // when a set is found
-    // add it to the matched cards
-    // removed selection
-    // add 3 cards to play
-    //TODO: add protection here
-    mutating private func setFound() {
-        //        matchedCards += cardsSelected
-        for matchSetCard in cardsSelected {
-            let indexOfMatch = cardsInPlay.index(of: matchSetCard)
-            if deck.count > 0 {
-                cardsInPlay[indexOfMatch!] = deck.remove(at: 0)
-            } else {
-                cardsInPlay.remove(at: indexOfMatch!)
-            }
-        }
-        cardsSelected.removeAll()
-        //        print("found set")
+    /// Method in charge of determining whether an array of cards is a Set
+    /// A set means if you have 2 of something and 1 of something else, then it is not a Set
+    private func checkForSet(cards: [Card]) -> Bool {
+        let num = Set(cardsSelected.map {$0.num}).count
+        let symbol = Set(cardsSelected.map {$0.symbol}).count
+        let shading = Set(cardsSelected.map {$0.shading}).count
+        let color = Set(cardsSelected.map {$0.color}).count
+        
+        return true //num != 2 && symbol != 2 && shading != 2 && color != 2
+        //    return false
     }
-    
     
     // TODO: If deck.count > 0, remove matched cards from screen entirely
     mutating func dealCards(forAmount amount : Int = 3) {
         guard amount > 0 else {return} // Check amount to draw is positive
-        guard deck.count > 0 else {return} // Check there are cards available to take
+        guard deck.count >= amount else {return} // Check there are cards available to take
         
         
-        // either "replace cards" or add 3 more
-        // to "replace cards" we check if there is a set.
-        // if a set is found, then we call the setFound method
-        // either way we want to add 3 cards which is done after
+        var cardsToDeal = [Card]()
         
-        if(checkForSet()) {
-            setFound()
-            
-        } else {
-            for _ in 0..<amount {
-                cardsInPlay.append(deck.removeFirst())
-            }
-            
+        for _ in 0..<amount {
+            cardsToDeal.append(deck.removeFirst())
         }
+        
+        
+        /// Replace any matched cards
+        for (index,card) in cardsInPlay.enumerated() {
+            if lastMatchedSet.contains(card) {
+                guard cardsToDeal.count > 0 else {return}
+                cardsInPlay[index] = cardsToDeal.removeFirst()
+            }
+        }
+        
+        if !cardsToDeal.isEmpty {
+            cardsInPlay.append(contentsOf: cardsToDeal)
+        }
+        
+        
     }
     
     init() {
@@ -144,7 +140,6 @@ struct SetGame {
         for x in deck {
             print(x.description)
         }
-        
     }
     
     mutating private func showFirst12Cards() {
@@ -157,7 +152,7 @@ struct SetGame {
         deck.removeAll()
         cardsInPlay.removeAll()
         cardsSelected.removeAll()
-        deck = CardDeck().cardSet
+        deck = CardDeck.generateDeckOfCards()
         shuffleCards(type: .allCards)
         showFirst12Cards()
     }
