@@ -61,7 +61,7 @@ class SetCardView: CardView {
      - Two Symbols: Begin drawing between the quarter and half way - minus half of the shape width.
      - Three Symbols: Begin drawing between three quarters of the way - minus half of the shape width.
      */
-    private var startPointX : CGFloat? {
+    private var startPointX : CGFloat?   {
         if let card = card {
             let halfShapeWidth = maxShapeDimension / 2
             switch card.num {
@@ -80,27 +80,29 @@ class SetCardView: CardView {
         return nil
     }
     
-    /// Computes object frames required for each symbol
+    /// Computes object frames required for each symbol.
+    /// The drawing begins at the startPoint and varies
+    /// based on the number of suymbols that need to be displayed
     
     private var objectFrames : [CGRect] {
-        var firstDrawPointx : CGFloat?
-        var firstDrawPointY: CGFloat?
+        var firstDrawPointx = CGFloat()
+        var firstDrawPointY = CGFloat()
         var frames = [CGRect]()
         
-        if let card = card {
+        if let card = card, let startPointX = startPointX {
+            
             firstDrawPointx = startPointX
             firstDrawPointY = (self.bounds.height) / 2 - (maxShapeDimension / 2)
         
             for _ in 1...card.num.rawValue {
-                frames.append(CGRect(x: firstDrawPointx!, y: firstDrawPointY!, width: maxShapeDimension, height: maxShapeDimension))
-                firstDrawPointx! += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
+                frames.append(CGRect(x: firstDrawPointx, y: firstDrawPointY, width: maxShapeDimension, height: maxShapeDimension))
+                firstDrawPointx += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
             }
         }
         return frames
     }
     
-    override func draw(_ rect: CGRect) {
-        
+    override func drawFront() {
         for objectFrame in objectFrames {
             if let card = card {
                 let object = SingleShapeView(frame: objectFrame, shape: card.symbol, color: card.color, shading: card.shading)
@@ -108,12 +110,11 @@ class SetCardView: CardView {
             }
         }
     }
-    
-    
-    
+
+    override func drawBack() {
+        self.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+    }
 }
-
-
 
 private struct Padding {
     static let betweenShapesProportion = CGFloat(1) / CGFloat(40)

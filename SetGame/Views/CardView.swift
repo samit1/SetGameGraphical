@@ -39,7 +39,7 @@ class CardView: UIView {
     
     override func draw(_ rect: CGRect) {
         layer.cornerRadius = 3.0
-        layer.borderColor = SelectionFrameColors.unselected
+        layer.borderWidth = 1.0
         
         if isFlippedUp {
             drawFront()
@@ -47,9 +47,6 @@ class CardView: UIView {
             drawBack()
             print("back drawn")
         }
-        
-        
-        
     }
     
     /// Draws the front of the card
