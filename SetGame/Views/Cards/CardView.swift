@@ -29,9 +29,9 @@ class CardView: UIView {
     @IBInspectable var isFlippedUp: Bool = true {
         didSet {
             if isFlippedUp {
-                layer.backgroundColor = BackgroundColors.frontsideColor
+                backgroundColor = BackgroundColors.frontsideColor
             } else {
-                layer.backgroundColor = BackgroundColors.backsideColor
+                backgroundColor = BackgroundColors.backsideColor
             }
             setNeedsDisplay()
         }
@@ -40,7 +40,6 @@ class CardView: UIView {
     // MARK: Drawing
     
     override func draw(_ rect: CGRect) {
-        self.layer.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         layer.cornerRadius = 12.0
         
@@ -63,8 +62,8 @@ class CardView: UIView {
 }
 
 private struct BackgroundColors {
-    static var backsideColor = UIColor.orange.cgColor
-    static var frontsideColor = UIColor.white.cgColor
+    static var backsideColor = UIColor.orange
+    static var frontsideColor = UIColor.white
 }
 
 private struct SelectionStyling {

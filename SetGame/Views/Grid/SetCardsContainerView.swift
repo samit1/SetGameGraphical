@@ -24,7 +24,7 @@ class SetCardsContainerView: CardsContainerGridView {
             for card in cards as! [SetCardView] {
                 
                 card.card = SetCardView.generateRandomCard()
-
+                card.isFlippedUp =  true 
                 
             }
         }
