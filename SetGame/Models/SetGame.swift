@@ -24,7 +24,7 @@ struct SetGame {
     private (set) var cardsInPlay = [Card]() {
         didSet {
             for (i,card) in cardsInPlay.enumerated() {
-//                print("\(i): \(card.description) ")
+                print("\(i+1): \(card.description) ")
             }
         }
     }
@@ -138,7 +138,7 @@ struct SetGame {
     init() {
         startNewGame()
         for x in deck {
-            print(x.description)
+//            print(x.description)
         }
     }
 

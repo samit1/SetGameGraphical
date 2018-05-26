@@ -48,7 +48,7 @@ class CardView: UIView {
 
         } else {
             drawBack()
-            print("back drawn")
+//            print("back drawn")
         }
     }
     

@@ -62,7 +62,7 @@ class CardsContainerGridView: UIView {
         for card in cardsViews {
             addSubview(card)
             cards.append(card)
-            print(self.frame)
+//            print(self.frame)
 
         }
         
