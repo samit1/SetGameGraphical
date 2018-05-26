@@ -19,7 +19,6 @@ class CardsContainerGridView: UIView {
     /// The cards that need to be arranged in a grid
     var cards = [CardView]() {
         didSet {
-            print("cards were set")
             repositionViews()
             updateViewsWithAnimation()
             for card in cards {
@@ -63,6 +62,7 @@ class CardsContainerGridView: UIView {
         for card in cardsViews {
             addSubview(card)
             cards.append(card)
+            print(self.frame)
 
         }
         
@@ -94,7 +94,6 @@ class CardsContainerGridView: UIView {
             options: .curveEaseInOut,
             animations: {
                 self.repositionViews()
-                print("ok")
                 }).startAnimation()
             //completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
     }

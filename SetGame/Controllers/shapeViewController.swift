@@ -25,14 +25,15 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         if game.cardsInPlay.isEmpty, cardGrid.cards.isEmpty {
             game.dealCards(forAmount: 12)
             updateViewFromModel()
         }
-    }
-
-    override func viewDidLayoutSubviews() {
-        updateViewFromModel()
     }
     
     // MARK: Button handlers

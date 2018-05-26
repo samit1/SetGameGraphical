@@ -24,7 +24,7 @@ struct SetGame {
     private (set) var cardsInPlay = [Card]() {
         didSet {
             for (i,card) in cardsInPlay.enumerated() {
-                print("\(i): \(card.description) ")
+//                print("\(i): \(card.description) ")
             }
         }
     }
@@ -34,7 +34,7 @@ struct SetGame {
     private (set) var cardsSelected = [Card]() {
         didSet {
             for (i,card) in cardsSelected.enumerated() {
-                print("\(i): \(card.description) ")
+//                print("\(i): \(card.description) ")
             }
         }
     }
