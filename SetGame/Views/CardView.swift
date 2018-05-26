@@ -15,9 +15,11 @@ class CardView: UIView {
     @IBInspectable var selectState : Bool = true {
         didSet {
             if selectState {
-                layer.borderColor = SelectionFrameColors.selected
+                layer.borderColor = SelectionStyling.selected.borderColor
+                layer.borderWidth = SelectionStyling.selected.borderWidth
             } else {
-                layer.borderColor = SelectionFrameColors.unselected
+                layer.borderColor = SelectionStyling.unselected.borderColor
+                layer.borderWidth = SelectionStyling.unselected.borderWidth
             }
             setNeedsDisplay()
         }
@@ -38,8 +40,7 @@ class CardView: UIView {
     // MARK: Drawing
     
     override func draw(_ rect: CGRect) {
-        layer.cornerRadius = 3.0
-        layer.borderWidth = 1.0
+        layer.cornerRadius = 12.0
         
         if isFlippedUp {
             drawFront()
@@ -57,12 +58,19 @@ class CardView: UIView {
     
 }
 
-fileprivate struct BackgroundColors {
+private struct BackgroundColors {
     static var backsideColor = UIColor.orange.cgColor
     static var frontsideColor = UIColor.white.cgColor
 }
 
-fileprivate struct SelectionFrameColors {
-    static var selected = UIColor.red.cgColor
-    static var unselected = UIColor.blue.cgColor
+private struct SelectionStyling {
+     struct selected {
+        static var borderColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1).cgColor
+        static var borderWidth = CGFloat(2.0)
+    }
+    struct unselected {
+        static var borderColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1).cgColor
+        static var borderWidth = CGFloat(0.4)
+    }
 }
+
