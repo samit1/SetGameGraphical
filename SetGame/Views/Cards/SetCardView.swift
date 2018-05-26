@@ -31,20 +31,27 @@ class SetCardView: CardView {
     // MARK: Initialization Methods
     
     /// TODO: Fix initalization stuff
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-
-    init(frame: CGRect, card: Card) {
-        self.card = card
+    override init(frame: CGRect) {
         super.init(frame: frame)
+    }
+    
+    convenience init(card: Card) {
+        self.init(frame: CGRect.zero)
+        self.card = card
+        //super.init()
         self.contentMode = .redraw
         self.clipsToBounds = true
         self.backgroundColor = UIColor.white
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
-    // MARK: Dimensions
+    
+    
+    
+    // MARK: Dimensions, Positioning, and Spacing
     
     /// A maximum dimension must be
     /// used to determine spacing in between shapes.
@@ -54,7 +61,7 @@ class SetCardView: CardView {
     }
     
     /**
-        Drawing must begin in a certain place to guarantee it will be centered
+     Drawing must begin in a certain place to guarantee it will be centered
      
      ##*Scenarios*
      - One Symbol: Begin drawing at halfway - minus half of the shape width.
@@ -93,7 +100,7 @@ class SetCardView: CardView {
             
             firstDrawPointx = startPointX
             firstDrawPointY = (self.bounds.height) / 2 - (maxShapeDimension / 2)
-        
+            
             for _ in 1...card.num.rawValue {
                 frames.append(CGRect(x: firstDrawPointx, y: firstDrawPointY, width: maxShapeDimension, height: maxShapeDimension))
                 firstDrawPointx += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
@@ -101,6 +108,9 @@ class SetCardView: CardView {
         }
         return frames
     }
+    
+    /// Draws the front of the card
+    /// and adds it to the subview
     
     override func drawFront() {
         for objectFrame in objectFrames {
@@ -110,7 +120,10 @@ class SetCardView: CardView {
             }
         }
     }
-
+    
+    /// Draws the back of the card
+    /// ...which is just setting the view to a color
+    
     override func drawBack() {
         self.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
     }
@@ -120,15 +133,5 @@ private struct Padding {
     static let betweenShapesProportion = CGFloat(1) / CGFloat(40)
 }
 
-    
 
-//
-//
-//    struct SelectionBorder {
-//        static let width : [selectionState : CGFloat] = [.selected: CGFloat(3.0), .unselected: CGFloat(0.5)]
-//    }
-//
-//    struct SelectionColor {
-//        static let color : [selectionState : CGColor] = [.selected: UIColor.blue.cgColor, .unselected: UIColor.black.cgColor]
-//    }
 

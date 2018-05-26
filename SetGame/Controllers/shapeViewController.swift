@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+@IBDesignable
 class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Model variables
@@ -24,7 +24,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     
     // UIView that displays grid of cards on screen
-    @IBOutlet weak var cardGrid: UIView! {didSet {
+    @IBOutlet weak var cardGrid: CardsContainerGridView! {didSet {
         cardGrid.backgroundColor = UIColor.white
         cardGrid.setNeedsLayout(); cardGrid.setNeedsDisplay();  updateViewFromModel()
         }
@@ -117,7 +117,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         grid.cellCount = game.cardsInPlay.count
         for (index, card) in game.cardsInPlay.enumerated() {
             if let display = grid[index] {
-                let cardview = SetCardView(frame: display, card: card)
+                let cardview = SetCardView(card: card)
+                cardview.frame = display
                 let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
                 tap.delegate = self
                 cardview.addGestureRecognizer(tap)
