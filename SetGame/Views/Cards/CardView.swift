@@ -40,10 +40,13 @@ class CardView: UIView {
     // MARK: Drawing
     
     override func draw(_ rect: CGRect) {
+        
+        
         layer.cornerRadius = 12.0
         
         if isFlippedUp {
             drawFront()
+
         } else {
             drawBack()
             print("back drawn")
@@ -55,6 +58,7 @@ class CardView: UIView {
     
     /// Draws the back of the card
     func drawBack() {}
+    
     
 }
 

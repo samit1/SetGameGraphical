@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+@IBDesignable
 class SingleShapeView: UIView {
     
     private var shape : Card.Symbol?

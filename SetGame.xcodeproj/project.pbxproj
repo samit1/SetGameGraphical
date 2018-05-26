@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0F0DC11F20B9A13300247B65 /* SetCardsContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F0DC11E20B9A13300247B65 /* SetCardsContainerView.swift */; };
 		0F97293120B1E8E30089071D /* SingleShapeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293020B1E8E30089071D /* SingleShapeView.swift */; };
 		0F97293320B1EDFB0089071D /* SetCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F97293220B1EDFB0089071D /* SetCardView.swift */; };
 		0FBB350E20ADD8B7005BFBBB /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FBB350C20ADD6D2005BFBBB /* Grid.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0F0DC11E20B9A13300247B65 /* SetCardsContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardsContainerView.swift; sourceTree = "<group>"; };
 		0F97293020B1E8E30089071D /* SingleShapeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleShapeView.swift; sourceTree = "<group>"; };
 		0F97293220B1EDFB0089071D /* SetCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetCardView.swift; sourceTree = "<group>"; };
 		0FBB350C20ADD6D2005BFBBB /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				0FE5BF6E20B8F52D0036B028 /* CardsContainerGridView.swift */,
+				0F0DC11E20B9A13300247B65 /* SetCardsContainerView.swift */,
 				0FBB350C20ADD6D2005BFBBB /* Grid.swift */,
 			);
 			path = Grid;
@@ -332,6 +335,7 @@
 				0FE5BF6B20B8B14B0036B028 /* CardView.swift in Sources */,
 				D681239520A68A6F004EABD9 /* SetGame.swift in Sources */,
 				0FBB350E20ADD8B7005BFBBB /* Grid.swift in Sources */,
+				0F0DC11F20B9A13300247B65 /* SetCardsContainerView.swift in Sources */,
 				D681239120A5BFAF004EABD9 /* Card.swift in Sources */,
 				0FE5BF6F20B8F52D0036B028 /* CardsContainerGridView.swift in Sources */,
 			);

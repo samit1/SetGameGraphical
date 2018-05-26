@@ -16,12 +16,13 @@ struct SetGame {
     
     
     
-    var cardDeck = CardDeck().cardSet
+    private (set) var deck = CardDeck().cardSet
+    
     
     private (set) var cardsInPlay = [Card]() {
         didSet {
             for (i,card) in cardsInPlay.enumerated() {
-                //                print("\(i): \(card.description) ")
+                print("\(i): \(card.description) ")
             }
         }
     }
@@ -29,7 +30,7 @@ struct SetGame {
     private (set) var cardsSelected = [Card]() {
         didSet {
             for (i,card) in cardsSelected.enumerated() {
-                //                print("\(i): \(card.description) ")
+                print("\(i): \(card.description) ")
             }
         }
     }
@@ -96,8 +97,8 @@ struct SetGame {
         //        matchedCards += cardsSelected
         for matchSetCard in cardsSelected {
             let indexOfMatch = cardsInPlay.index(of: matchSetCard)
-            if cardDeck.count > 0 {
-                cardsInPlay[indexOfMatch!] = cardDeck.remove(at: 0)
+            if deck.count > 0 {
+                cardsInPlay[indexOfMatch!] = deck.remove(at: 0)
             } else {
                 cardsInPlay.remove(at: indexOfMatch!)
             }
@@ -106,7 +107,12 @@ struct SetGame {
         //        print("found set")
     }
     
-    mutating func add3CardsToPlay() {
+    
+    // TODO: If deck.count > 0, remove matched cards from screen entirely
+    mutating func dealCards(forAmount amount : Int = 3) {
+        guard amount > 0 else {return} // Check amount to draw is positive
+        guard deck.count > 0 else {return} // Check there are cards available to take
+        
         
         // either "replace cards" or add 3 more
         // to "replace cards" we check if there is a set.
@@ -117,10 +123,8 @@ struct SetGame {
             setFound()
             
         } else {
-            for _ in 1...3 {
-                if cardDeck.count > 0 {
-                    cardsInPlay.append(cardDeck.remove(at: 0))
-                }
+            for _ in 0..<amount {
+                cardsInPlay.append(deck.removeFirst())
             }
             
         }
@@ -128,23 +132,23 @@ struct SetGame {
     
     init() {
         startNewGame()
-        for x in cardDeck {
-            //            print(x.description)
+        for x in deck {
+            print(x.description)
         }
         
     }
     
     mutating private func showFirst12Cards() {
         for _ in stride(from: 0, to: 12, by:  1) {
-            cardsInPlay.append(cardDeck.removeFirst())
+            cardsInPlay.append(deck.removeFirst())
         }
     }
     
     mutating public func startNewGame() {
-        cardDeck.removeAll()
+        deck.removeAll()
         cardsInPlay.removeAll()
         cardsSelected.removeAll()
-        cardDeck = CardDeck().cardSet
+        deck = CardDeck().cardSet
         shuffleCards(type: .allCards)
         showFirst12Cards()
     }
@@ -152,7 +156,7 @@ struct SetGame {
     mutating func shuffleCards(type : shuffleType) {
         switch type {
         case .allCards:
-            cardDeck = cardDeck.shuffleCards()
+            deck = deck.shuffleCards()
         case .cardsOnTable:
             cardsInPlay = cardsInPlay.shuffleCards()
         }
@@ -175,9 +179,9 @@ fileprivate extension Array where Element == Card {
     }
 }
 
-fileprivate extension Int {
+extension Int {
     var randIndex : Int {
-        let maxIndex = self - 1
+        let maxIndex = self 
         if maxIndex < 0 {
             //            print(-Int(arc4random_uniform(UInt32(maxIndex))))
             return -Int(arc4random_uniform(UInt32(maxIndex)))

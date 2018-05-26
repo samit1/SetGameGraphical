@@ -14,7 +14,7 @@ import UIKit
 class SetCardView: CardView {
     
     /// The card that is displayed
-    private (set) var card: Card? {
+    var card: Card? {
         didSet {
             setNeedsDisplay()
         }
@@ -31,24 +31,24 @@ class SetCardView: CardView {
     // MARK: Initialization Methods
     
     /// TODO: Fix initalization stuff
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-    }
-    
-    convenience init(card: Card) {
-        self.init(frame: CGRect.zero)
-        self.card = card
-        //super.init()
-        self.contentMode = .redraw
-        self.clipsToBounds = true
-        self.backgroundColor = UIColor.white
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    
+//    override init(frame: CGRect) {
+//        super.init(frame: frame)
+//    }
+//
+//    convenience init(card: Card) {
+//        self.init(frame: CGRect.zero)
+//        self.card = card
+//        //super.init()
+//        self.contentMode = .redraw
+//        self.clipsToBounds = true
+//        self.backgroundColor = UIColor.white
+//    }
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//
+//
     
     
     // MARK: Dimensions, Positioning, and Spacing
@@ -117,8 +117,10 @@ class SetCardView: CardView {
             if let card = card {
                 let object = SingleShapeView(frame: objectFrame, shape: card.symbol, color: card.color, shading: card.shading)
                 self.addSubview(object)
+                
             }
         }
+//       self.backgroundColor = UIColor.white
     }
     
     /// Draws the back of the card
@@ -126,6 +128,16 @@ class SetCardView: CardView {
     
     override func drawBack() {
         self.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+    }
+    /// Create a random SetCardView
+    /// This is strictly for use of @IBDesignable and @IBInspectable funtionalities
+    static func generateRandomCard() -> Card {
+        let color = Card.Color.all.index(Card.Color.all.startIndex, offsetBy: Card.Color.all.count.randIndex)
+        let symbol = Card.Symbol.all.index(Card.Symbol.all.startIndex, offsetBy: Card.Symbol.all.count.randIndex)
+        let number = Card.Number.all.index(Card.Number.all.startIndex, offsetBy: Card.Number.all.count.randIndex)
+        let shading = Card.Shading.all.index(Card.Shading.all.startIndex, offsetBy: Card.Shading.all.count.randIndex)
+        let card = Card(num: Card.Number.all[number], symbol: Card.Symbol.all[symbol], shading: Card.Shading.all[shading], color: Card.Color.all[color])
+        return card
     }
 }
 
