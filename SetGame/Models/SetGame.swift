@@ -15,10 +15,12 @@ struct SetGame {
     }
     
     
-    
+    /// The deck of cards
     private (set) var deck = CardDeck().cardSet
     
     
+    /// The cards that are currently in play
+    /// i.e., card is not on the table
     private (set) var cardsInPlay = [Card]() {
         didSet {
             for (i,card) in cardsInPlay.enumerated() {
@@ -26,7 +28,9 @@ struct SetGame {
             }
         }
     }
-    //    private (set) var matchedCards = [Card]()
+
+    /// The selected cards are used to determine whether
+    /// a set of cards is a Set
     private (set) var cardsSelected = [Card]() {
         didSet {
             for (i,card) in cardsSelected.enumerated() {
@@ -34,6 +38,11 @@ struct SetGame {
             }
         }
     }
+    
+    /// The cards that were matched.
+    /// These cards are a Set
+    /// - Note: A matched set contains 3 cards
+    private (set) var matchedCards = [[Card]]()
     
     mutating func cardSelected(card: Card) {
         //add card in card selected
