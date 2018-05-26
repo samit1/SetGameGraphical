@@ -11,17 +11,12 @@ import UIKit
 class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Model variables
-    private var game = SetGame() 
-//    private var cardsOnScreen = [SetCardView]()
-//    private var cardsSelectedOnScreen : [Card] {get {return game.cardsSelected}}
-//
-    
+    private var game = SetGame()
     
     // MARK: Outlets
     
     // button on screen that allows user to deal 3 more cards
     @IBOutlet weak var deal3MoreCardsBtn: UIButton!
-    
     
     // UIView that displays grid of cards on screen
     @IBOutlet weak var cardGrid: SetCardsContainerView!
@@ -30,11 +25,12 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        addSwipeGestureToCardGrid()
-//        addRotationGestureToCardGrid()
+        if game.cardsInPlay.isEmpty, cardGrid.cards.isEmpty {
+            game.dealCards(forAmount: 12)
+            updateViewFromModel()
+        }
     }
-    
+
     override func viewDidLayoutSubviews() {
         updateViewFromModel()
     }
@@ -43,9 +39,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // when tapped, cards are added on screen
     @IBAction func dealMoreCardsBtnTapped(_ sender: UIButton) { add3CardsInPlay()
-        for card in game.cardsInPlay[0...3] {
-            cardGrid.addCards()
-        }
+//        for card in game.cardsInPlay[0...3] {
+//            cardGrid.addCards()
+//        }
     }
     
     
@@ -55,14 +51,14 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // notifies model what card was tapped
     // view gets updated
     @objc func cardBtnTapped(_ recognizer : UITapGestureRecognizer) {
-        guard let tapped = recognizer.view as? SetCardView  else {return}
-        
-        if let selectedCard = game.cardsInPlay.index(of: tapped) {
-            if let card = game.cardsInPlay[selectedCard].card {
-                game.cardSelected(card: card)
-            }
-        }
-        updateViewFromModel()
+//        guard let tapped = recognizer.view as? SetCardView  else {return}
+//
+//        if let selectedCard = game.cardsInPlay.index(of: tapped) {
+//            if let card = game.cardsInPlay[selectedCard].card {
+//                game.cardSelected(card: card)
+//            }
+//        }
+//        updateViewFromModel()
     }
     
     
@@ -94,7 +90,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // adds cards into play (called on user request)
     // updates the view
     private func add3CardsInPlay() {
-        game.dealCards()
+        //game.dealCards()
         updateViewFromModel()
     }
     
@@ -102,85 +98,41 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // update the view based on model changes
     private func updateViewFromModel() {
-//        removeSubviewsFromCardGrid()
-        createGridWithCards()
-//        addSelectionBordersIfNeeded()
+        
+        /// Update card.makeCardViews so it knows how many cards to display
+       cardGrid.addCards(byamount: game.cardsInPlay.count, animated: false)
+       // cardGrid.frame = cardGrid.bounds
+        
+        /// Set card for each cardsOnScreen (if possible)
+        for (index, cardView) in cardGrid.cards.enumerated() {
+            if let setCardView = cardView as? SetCardView {
+                guard game.cardsInPlay.indices.contains(index) else {return}
+                
+                let card = game.cardsInPlay[index]
+                setCardView.card = card
+
+            }
+        }
+        
+        
+        
+        
+        
+        
     }
     
     
     // draw grids on screen
-    private func createGridWithCards() {
-        cardGrid.cards.removeAll()
-        for card in game.cardsInPlay {
-            if cardGrid.cards.isEmpty {
-                cardGrid.addCards(byamount: 12, animated: false)
-            }
-        }
-        //var grid = Grid(layout: .dimensions(rowCount: game.cardsInPlay.count / 3 , columnCount: 4), frame: cardGrid.bounds)
-        //        var grid = Grid(layout: .aspectRatio(8/5), frame: cardGrid.bounds)
-        //var grid = Grid(layout: .aspectRatio(8/5), frame: cardGrid.bounds)
-        //        grid.cellCount = game.cardsInPlay.count
-        //        for (index, card) in game.cardsInPlay.enumerated() {
-        //            if let display = grid[index] {
-        //                let cardview = SetCardView(card: card)
-        //                cardview.frame = display
-        //                //let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
-        //                //tap.delegate = self
-        //                cardview.addGestureRecognizer(tap)
-        //                cardview.contentMode = .redraw
-        ////                cardGrid.addSubview(cardview)
-        ////                UIViewPropertyAnimator.runningPropertyAnimator(
-        ////                    withDuration: 0.6,
-        ////                    delay: 0.0,
-        ////                    options: .curveEaseIn,
-        ////                    animations: {
-        ////                        self.cardsOnScreen.append(cardview)
-        ////                        }
-        ////                    //completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
-        ////
-        //            )
-        //        }
-        
-    }
-//
-
-
-//private func flyIn() {
-//    for (index,cardView) in cardsOnScreen.enumerated() {
-//        let cardViewCoordinates = CGPoint(x: cardView.frame.minX, y: cardView.frame.minY) // this gives us the upper left most point of the cardView
-//
-//        cardView.center = {
-//            let x  = cardGrid.frame.minX + cardView.frame.width / 2
-//            let y = cardGrid.frame.maxY - cardView.frame.height
-//            return CGPoint(x: x, y: y)
-//        }()
-//
-//        UIViewPropertyAnimator.runningPropertyAnimator(
-//            withDuration: 0.6,
-//            delay: Double(index) / 80,
-//            options: [.curveEaseIn],
-//            animations:  {[unowned cardView, cardViewCoordinates] in
-//                cardView.frame = CGRect(origin: cardViewCoordinates, size: cardView.frame.size)
-//        })
-//
-//    }
-//}
-}
-// remove all subviews from grid
-//    private func removeSubviewsFromCardGrid() {
-//        cardGrid.subviews.forEach {$0.removeFromSuperview()}
-//    }
-
-// adds borders around UIViews if needed
-//    private func addSelectionBordersIfNeeded() {
-//        cardsOnScreen.forEach({
-//            if let card = $0.card, cardsSelectedOnScreen.contains(card)  {
-//                $0.selectState = true
-//            } else {
-//                $0.selectState = false
+//    private func createGridWithCards() {
+//        cardGrid.cards.removeAll()
+//        for card in game.cardsInPlay {
+//            if cardGrid.cards.isEmpty {
+//                cardGrid.addCards(byamount: 12, animated: false)
 //            }
-//        })
+//        }
 //    }
+
+}
 
 // MARK: Add gestures
 

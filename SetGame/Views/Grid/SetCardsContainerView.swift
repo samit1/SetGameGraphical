@@ -20,15 +20,12 @@ class SetCardsContainerView: CardsContainerGridView {
         
         if numberOfViewsForDisplay > 0 {
             addCards(byamount: numberOfViewsForDisplay, animated: false)
-            repositionViews()
 
             for card in cards as! [SetCardView] {
                 
                 card.card = SetCardView.generateRandomCard()
-                card.isFlippedUp = true
-//                card.backgroundColor = UIColor.white
-//                card.layer.cornerRadius = 10.0
-                card.setNeedsDisplay()
+
+                
             }
         }
     }
@@ -36,13 +33,6 @@ class SetCardsContainerView: CardsContainerGridView {
     override func makeCardViews(byAmount numberOfCards: Int) -> [CardView] {
         return (0..<numberOfCards).map {_ in SetCardView()}
     }
-    
-    /*
-     // Only override draw() if you perform custom drawing.
-     // An empty implementation adversely affects performance during animation.
-     override func draw(_ rect: CGRect) {
-     // Drawing code
-     }
-     */
+
     
 }

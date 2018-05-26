@@ -141,12 +141,7 @@ struct SetGame {
             print(x.description)
         }
     }
-    
-    mutating private func showFirst12Cards() {
-        for _ in stride(from: 0, to: 12, by:  1) {
-            cardsInPlay.append(deck.removeFirst())
-        }
-    }
+
     
     mutating public func startNewGame() {
         deck.removeAll()
@@ -154,7 +149,6 @@ struct SetGame {
         cardsSelected.removeAll()
         deck = CardDeck.generateDeckOfCards()
         shuffleCards(type: .allCards)
-        showFirst12Cards()
     }
     
     mutating func shuffleCards(type : shuffleType) {

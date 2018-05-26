@@ -30,7 +30,7 @@
                                 <color key="backgroundColor" red="0.91929749637634783" green="1" blue="0.68490150156397678" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="numberOfViewsForDisplay">
-                                        <integer key="value" value="18"/>
+                                        <integer key="value" value="13"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>

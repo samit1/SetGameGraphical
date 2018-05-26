@@ -22,10 +22,12 @@ class CardsContainerGridView: UIView {
             print("cards were set")
             repositionViews()
             updateViewsWithAnimation()
+            for card in cards {
+//                print(card.frame)
+            }
         }
     }
-    
-    
+
     
     /// The grid that is in charge of
     /// calculating the frame for each card
@@ -56,18 +58,17 @@ class CardsContainerGridView: UIView {
     /// - Parameter amount: The number of cards to be added
     /// - Parameter animated: Bool indicating if the addition should be animated
     func addCards(byamount amount: Int = 3, animated : Bool = false) {
-        
-        let cardsViews = self.makeCardViews(byAmount: amount)
+        let cardsViews = makeCardViews(byAmount: amount)
         
         for card in cardsViews {
             addSubview(card)
             cards.append(card)
+
         }
         
 
         grid.cellCount += amount
-        
-        repositionViews()
+        grid.frame = gridFrame
     }
     
     
