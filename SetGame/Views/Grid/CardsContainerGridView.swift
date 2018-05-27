@@ -9,7 +9,7 @@
 import UIKit
 
 @IBDesignable
-class CardsContainerGridView: UIView {
+class CardsContainerGridView: UIView  {
 
     
     /// The number of items to display in storyboard
@@ -18,7 +18,7 @@ class CardsContainerGridView: UIView {
     
     /// The cards that need to be arranged in a grid
     var cards = [CardView]() { didSet {updateViewsWithAnimation()}}
-
+    
     
     /// The grid that is in charge of
     /// calculating the frame for each card
@@ -54,8 +54,6 @@ class CardsContainerGridView: UIView {
         for card in cardsViews {
             addSubview(card)
             cards.append(card)
-//            print(self.frame)
-
         }
         grid.cellCount += amount
         grid.frame = gridFrame
@@ -67,10 +65,25 @@ class CardsContainerGridView: UIView {
     func removeCard(at index: Int, animated : Bool = false) {
         guard cards.indices.contains(index) else {return}
         guard grid.cellCount > 0 else {return}
-        let cardView = cards.remove(at: index)
-        cardView.removeFromSuperview()
-        grid.cellCount -= 1
-        
+        let cardView = cards[index]
+        if animated {
+            UIViewPropertyAnimator.runningPropertyAnimator(
+                withDuration: 2.5,
+                delay: 0.0,
+                options: .curveEaseOut,
+                animations: {
+                    cardView.alpha = 0
+            },
+                completion: {[unowned self] finished in
+                    cardView.removeFromSuperview()
+                    self.grid.cellCount -= 1
+                    self.cards.remove(at: index)
+            })
+        } else {
+            cardView.removeFromSuperview()
+            cards.remove(at: index)
+            grid.cellCount -= 1
+        }
     }
     
     /// Called whenever cards should be repositioned.
@@ -87,18 +100,18 @@ class CardsContainerGridView: UIView {
         setNeedsLayout()
         
     }
-
+    
     func updateViewsWithAnimation() {
         UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.3,
+            withDuration: 2.5,
             delay: 0,
             options: .curveEaseInOut,
             animations: {
                 self.repositionViews()
-                }).startAnimation()
-            //completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
+        }).startAnimation()
+        //completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
     }
-
+    
 }
 
 extension UIView {

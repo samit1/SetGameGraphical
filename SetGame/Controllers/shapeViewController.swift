@@ -23,11 +23,11 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // UIView that displays grid of cards on screen
     @IBOutlet weak var cardGrid: SetCardsContainerView!
     
+    
     // MARK: Application Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     }
     
     override func viewDidLayoutSubviews() {
@@ -63,7 +63,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 for (index,view) in cardGrid.cards.enumerated() {
                     if let cardSetView = view as? SetCardView {
                         if cardSetView.card == card {
-                            cardGrid.removeCard(at: index)
+                            cardGrid.removeCard(at: index, animated: true)
                         }
                     }
                 }

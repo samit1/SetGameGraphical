@@ -37,6 +37,16 @@ class CardView: UIView {
         }
     }
     
+    @IBInspectable var shouldShow: Bool = true {
+        didSet {
+            if shouldShow {
+                self.alpha = 1
+            } else {
+                self.alpha = 0
+            }
+        }
+    }
+    
     // MARK: Drawing
     
     override func draw(_ rect: CGRect) {
