@@ -65,13 +65,21 @@ class CardsContainerGridView: UIView {
 //            print(self.frame)
 
         }
-        
-
         grid.cellCount += amount
         grid.frame = gridFrame
     }
     
     
+    /// - Parameter index: the index of CardView which you want to remove (if exists)
+    /// - Parameter animated: Bool indicated if removal should be animated
+    func removeCard(at index: Int, animated : Bool = false) {
+        guard cards.indices.contains(index) else {return}
+        guard grid.cellCount > 0 else {return}
+        var cardView = cards.remove(at: index)
+        cardView.removeFromSuperview()
+        grid.cellCount -= 1
+        
+    }
     
     /// Called whenever cards should be repositioned.
     /// It removes all of the existing subviews and

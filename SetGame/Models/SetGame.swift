@@ -110,7 +110,13 @@ struct SetGame {
     // TODO: If deck.count > 0, remove matched cards from screen entirely
     mutating func dealCards(forAmount amount : Int = 3) {
         guard amount > 0 else {return} // Check amount to draw is positive
-        guard deck.count >= amount else {return} // Check there are cards available to take
+        guard deck.count >= amount else {
+            for card in lastMatchedSet {
+                if let index = cardsInPlay.index(of: card) {
+                    cardsInPlay.remove(at: index)
+                }
+            }
+            return} // Check there are cards available to take
         
         
         var cardsToDeal = [Card]()
@@ -137,9 +143,6 @@ struct SetGame {
     
     init() {
         startNewGame()
-        for x in deck {
-//            print(x.description)
-        }
     }
 
     

@@ -15,8 +15,10 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Outlets
     
+    //TODO: Remove if no more cards
     // button on screen that allows user to deal 3 more cards
     @IBOutlet weak var addCardsBtn: UIButton!
+    
     
     // UIView that displays grid of cards on screen
     @IBOutlet weak var cardGrid: SetCardsContainerView!
@@ -54,6 +56,21 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         guard let tapped = recognizer.view as? SetCardView  else {return}
         guard tapped.card != nil else {return}
         game.cardSelected(card: tapped.card!)
+        
+        /// At end of deck, remove matched cards
+        if game.deck.isEmpty {
+            for card in game.lastMatchedSet {
+                for (index,view) in cardGrid.cards.enumerated() {
+                    if let cardSetView = view as? SetCardView {
+                        if cardSetView.card == card {
+                            cardGrid.removeCard(at: index)
+                        }
+                    }
+                }
+                
+            }
+            
+        }
         updateViewFromModel()
         
     }
@@ -84,17 +101,22 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         game.shuffleCards(type: .cardsOnTable)
     }
     
-    // adds cards into play (called on user request)
-    // updates the view
+    /// Adds cards into play (called on user request)
+    /// Updates the view
     private func addCards() {
+        /// If there are no more card to deal out then there is no need for UI changes
+        guard !game.deck.isEmpty else {return}
+        
         game.dealCards(forAmount: 3)
+        
+        
         cardGrid.addCards(byamount: 3, animated: true)
         updateViewFromModel()
     }
     
     // MARK: UIMaintenance
     
-    // update the view based on model changes
+    // Update the view based on model changes
     private func updateViewFromModel() {
        // cardGrid.removeAllSubviews()
         /// Update card.makeCardViews so it knows how many cards to display
