@@ -97,8 +97,8 @@
 		0FBB350B20ADD6CD005BFBBB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				0FE5BF6C20B8F3E60036B028 /* Cards */,
 				0FE5BF6D20B8F3FA0036B028 /* Grid */,
+				0FE5BF6C20B8F3E60036B028 /* Cards */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -56,23 +56,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         guard let tapped = recognizer.view as? SetCardView  else {return}
         guard tapped.card != nil else {return}
         game.cardSelected(card: tapped.card!)
-        
-        /// At end of deck, remove matched cards
-        if game.deck.isEmpty {
-            for card in game.lastMatchedSet {
-                for (index,view) in cardGrid.cards.enumerated() {
-                    if let cardSetView = view as? SetCardView {
-                        if cardSetView.card == card {
-                            cardGrid.removeCard(at: index, animated: true)
-                        }
-                    }
-                }
-                
-            }
-            
-        }
         updateViewFromModel()
-        
     }
     
     
@@ -118,12 +102,36 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // Update the view based on model changes
     private func updateViewFromModel() {
-       // cardGrid.removeAllSubviews()
-        /// Update card.makeCardViews so it knows how many cards to display
-//        cardGrid.addCards(byamount: game.cardsInPlay.count, animated: false)
-//        var buttons =  [SetCardView]()
-//        buttons = cardGrid.cards as! [SetCardView]
+        /// At end of deck, remove matched cards
         
+        if game.deck.isEmpty {
+            for card in game.lastMatchedSet {
+                for (index,view) in cardGrid.cards.enumerated() {
+                    if let setCardView = view as? SetCardView {
+                        if setCardView.card == card {
+                            animator.addan
+                            UIViewPropertyAnimator.runningPropertyAnimator(
+                                withDuration: 2.5
+                                , delay: 0.0
+                                , options: .curveEaseOut
+                                , animations: {setCardView.alpha = 0.0}
+                                , completion: {[unowned self] finished in
+                                    self.cardGrid.removeCard(at: index)
+                                    UIViewPropertyAnimator.runningPropertyAnimator(
+                                        withDuration: 2.2,
+                                        delay: 0.0,
+                                        options: .curveEaseOut,
+                                        animations: { } ,
+                                        completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
+                                    
+                                    self.cardGrid.updateViewsWithAnimation()
+                                    self.updateViewFromModel()
+                            })
+                        }
+                    }
+                }
+            }
+        }
         
         /// Set card for each cardsOnScreen (if possible)
         for (index, cardView) in cardGrid.cards.enumerated() {
