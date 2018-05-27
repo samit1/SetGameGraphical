@@ -17,16 +17,7 @@ class CardsContainerGridView: UIView {
     
     
     /// The cards that need to be arranged in a grid
-    var cards = [CardView]() {
-        didSet {
-            updateViewsWithAnimation()
-            repositionViews()
-            
-//            for card in cards {
-////                print(card.frame)
-//            }
-        }
-    }
+    var cards = [CardView]() { didSet {updateViewsWithAnimation()}}
 
     
     /// The grid that is in charge of
@@ -35,12 +26,12 @@ class CardsContainerGridView: UIView {
     
     
     /// The frame of the desired grid
-    var gridFrame : CGRect {
-//        let rect = CGRect(x: self.bounds.width * 0.05,
-//                          y: self.bounds.height * 0.10 ,
-//                          width: self.bounds.width * 0.95,
-//                          height: self.bounds.height * 0.90)
-        return self.bounds
+    var gridFrame : CGRect { 
+        let rect = CGRect(x: self.bounds.width * 0.05,
+                          y: self.bounds.height * 0.05 ,
+                          width: self.bounds.width * 0.90,
+                          height: self.bounds.height * 0.90)
+        return rect
     }
     
     var positioningAnimator: UIViewPropertyAnimator?
@@ -76,7 +67,7 @@ class CardsContainerGridView: UIView {
     func removeCard(at index: Int, animated : Bool = false) {
         guard cards.indices.contains(index) else {return}
         guard grid.cellCount > 0 else {return}
-        var cardView = cards.remove(at: index)
+        let cardView = cards.remove(at: index)
         cardView.removeFromSuperview()
         grid.cellCount -= 1
         
