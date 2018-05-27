@@ -19,8 +19,9 @@ class CardsContainerGridView: UIView {
     /// The cards that need to be arranged in a grid
     var cards = [CardView]() {
         didSet {
-            repositionViews()
             updateViewsWithAnimation()
+            repositionViews()
+            
 //            for card in cards {
 ////                print(card.frame)
 //            }
@@ -98,7 +99,7 @@ class CardsContainerGridView: UIView {
 
     func updateViewsWithAnimation() {
         UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 10,
+            withDuration: 0.3,
             delay: 0,
             options: .curveEaseInOut,
             animations: {
