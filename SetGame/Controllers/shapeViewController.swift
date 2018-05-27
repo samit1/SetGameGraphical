@@ -16,7 +16,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: Outlets
     
     // button on screen that allows user to deal 3 more cards
-    @IBOutlet weak var deal3MoreCardsBtn: UIButton!
+    @IBOutlet weak var addCardsBtn: UIButton!
     
     // UIView that displays grid of cards on screen
     @IBOutlet weak var cardGrid: SetCardsContainerView!
@@ -32,6 +32,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         super.viewDidLayoutSubviews()
         if game.cardsInPlay.isEmpty, cardGrid.cards.isEmpty {
             game.dealCards(forAmount: 12)
+            cardGrid.addCards(byamount: game.cardsInPlay.count, animated: false)
             updateViewFromModel()
         }
     }
@@ -39,10 +40,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // MARK: Button handlers
     
     // when tapped, cards are added on screen
-    @IBAction func dealMoreCardsBtnTapped(_ sender: UIButton) { add3CardsInPlay()
-        //        for card in game.cardsInPlay[0...3] {
-        //            cardGrid.addCards()
-        //        }
+    @IBAction func dealMoreCardsBtnTapped(_ sender: UIButton) {
+        addCards()
     }
     
     
@@ -57,12 +56,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
         game.cardSelected(card: tapped.card!)
         updateViewFromModel()
         
-//        if let selectedCard = game.cardsInPlay.index(of: tapped) {
-//                    if let card = game.cardsInPlay[selectedCard].card {
-//                        game.cardSelected(card: card)
-//                    }
-//                }
-//                updateViewFromModel()
     }
     
     
@@ -70,7 +63,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     // adds cards into play
     @objc func addThreeCardsOnSwipeDown(_ recognizer : UISwipeGestureRecognizer) {
         guard (recognizer.view) != nil else {return}
-        add3CardsInPlay()
+        addCards()
     }
     
     
@@ -93,8 +86,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // adds cards into play (called on user request)
     // updates the view
-    private func add3CardsInPlay() {
-        //game.dealCards()
+    private func addCards() {
+        game.dealCards(forAmount: 3)
+        cardGrid.addCards(byamount: 3, animated: true)
         updateViewFromModel()
     }
     
@@ -102,35 +96,40 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     // update the view based on model changes
     private func updateViewFromModel() {
-        
+       // cardGrid.removeAllSubviews()
         /// Update card.makeCardViews so it knows how many cards to display
-        cardGrid.addCards(byamount: game.cardsInPlay.count, animated: false)
-        // cardGrid.frame = cardGrid.bounds
+//        cardGrid.addCards(byamount: game.cardsInPlay.count, animated: false)
+//        var buttons =  [SetCardView]()
+//        buttons = cardGrid.cards as! [SetCardView]
+        
         
         /// Set card for each cardsOnScreen (if possible)
         for (index, cardView) in cardGrid.cards.enumerated() {
             if let setCardView = cardView as? SetCardView {
-                guard game.cardsInPlay.indices.contains(index) else {return}
+                guard game.cardsInPlay.indices.contains(index) else {continue}
                 let card = game.cardsInPlay[index]
                 setCardView.card = card
                 setCardView.isFlippedUp = true
                 
+                
+                /// Assigned Target Actions to each view
+                assignTapAction(to: setCardView)
+                
+                /// Selection
+                if game.cardsSelected.contains(card) {
+                    setCardView.selectState = true
+                } else {
+                    setCardView.selectState = false 
+                }
             }
         }
         
-        /// Assigned Target Actions to each view
-        assignTapAction()
-        
-        
-        
     }
     
-    private func assignTapAction() {
-        for card in cardGrid.cards {
+    private func assignTapAction(to cardView: CardView ) {
             let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
             tap.delegate = self
-            card.addGestureRecognizer(tap)
-        }
+            cardView.addGestureRecognizer(tap)
     }
     
     /*

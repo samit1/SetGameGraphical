@@ -21,9 +21,9 @@ class CardsContainerGridView: UIView {
         didSet {
             repositionViews()
             updateViewsWithAnimation()
-            for card in cards {
-//                print(card.frame)
-            }
+//            for card in cards {
+////                print(card.frame)
+//            }
         }
     }
 
@@ -80,11 +80,12 @@ class CardsContainerGridView: UIView {
         grid.frame = gridFrame
         grid.cellCount = cards.count
         
-        for (index,card) in cardsToPosition.enumerated() {
+        for (index,card) in cards.enumerated() {
             guard let frame = grid[index] else {return}
             card.frame = frame
         }
         setNeedsLayout()
+        
     }
 
     func updateViewsWithAnimation() {
@@ -107,24 +108,4 @@ extension UIView {
         })
     }
 }
-/*
- 
- override func prepareForInterfaceBuilder() {
- super.prepareForInterfaceBuilder()
- let deck = CardDeck().cardSet
- for (i,card) in deck.enumerated() {
- let setCardView = SetCardView(card: card)
- if let frame = grid[i] {
- setCardView.frame = frame
- cards.append(setCardView)
- }
- }
- 
- print("HI")
- for i in 0...numberOfViewsForDisplay {
- if cards.count > numberOfViewsForDisplay {
- self.addSubview(cards[i])
- }
- }
- }
- */
+

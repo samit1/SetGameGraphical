@@ -16,6 +16,7 @@ class SetCardView: CardView {
     /// The card that is displayed
     var card: Card? {
         didSet {
+            self.removeAllSubviews()
             setNeedsDisplay()
         }
     }

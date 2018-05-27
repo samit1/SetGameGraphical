@@ -10,9 +10,9 @@ import UIKit
 @IBDesignable
 class SingleShapeView: UIView {
     
-    private var shape : Card.Symbol?
-    private var color : Card.Color?
-    private var shading : Card.Shading?
+    private var shape : Card.Symbol? {didSet {setNeedsDisplay()}}
+    private var color : Card.Color? {didSet {setNeedsDisplay()}}
+    private var shading : Card.Shading? {didSet {setNeedsDisplay()}}
     
     init(frame: CGRect, shape: Card.Symbol, color: Card.Color, shading: Card.Shading) {
         self.shape = shape
