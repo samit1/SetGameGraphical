@@ -92,16 +92,19 @@ class CardsContainerGridView: UIView  {
     }
     
     func updateViewsWithAnimation() {
-       // if delegate != nil {delegate?.isAnimatingRepositioning = true }
+        
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 4,
             delay: 0,
             options: .curveEaseInOut,
             animations: {
-                self.repositionViews()
-        })
+                if self.delegate != nil {self.delegate?.isAnimatingRepositioning = true }
+                self.repositionViews()},
+            completion: {finished in
+                if self.delegate != nil {self.delegate?.isAnimatingRepositioning = false}
+                })
     }
-    
+  
 }
 
 extension UIView {

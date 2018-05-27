@@ -8,7 +8,17 @@
 
 import UIKit
 @IBDesignable
-class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
+class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsContainerGridViewDelegate {
+    var isAnimatingCardRemoval: Bool = false { didSet {
+        
+        }
+    }
+    var isAnimatingRepositioning: Bool = false {didSet {
+        print(isAnimatingRepositioning)
+        }
+        
+    }
+    
     
     // MARK: Model variables
     private var game = SetGame()
@@ -28,6 +38,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        cardGrid.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -109,7 +120,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 for (index,view) in cardGrid.cards.enumerated() {
                     if let setCardView = view as? SetCardView {
                         if setCardView.card == card {
-                            animator.addan
                             UIViewPropertyAnimator.runningPropertyAnimator(
                                 withDuration: 2.5
                                 , delay: 0.0
@@ -117,13 +127,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                                 , animations: {setCardView.alpha = 0.0}
                                 , completion: {[unowned self] finished in
                                     self.cardGrid.removeCard(at: index)
-                                    UIViewPropertyAnimator.runningPropertyAnimator(
-                                        withDuration: 2.2,
-                                        delay: 0.0,
-                                        options: .curveEaseOut,
-                                        animations: { } ,
-                                        completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
-                                    
                                     self.cardGrid.updateViewsWithAnimation()
                                     self.updateViewFromModel()
                             })
@@ -132,6 +135,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 }
             }
         }
+        
+
+        
         
         /// Set card for each cardsOnScreen (if possible)
         for (index, cardView) in cardGrid.cards.enumerated() {
@@ -149,7 +155,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
                 if game.cardsSelected.contains(card) {
                     setCardView.selectState = true
                 } else {
-                    setCardView.selectState = false 
+                    setCardView.selectState = false
                 }
             }
         }
@@ -157,9 +163,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
     }
     
     private func assignTapAction(to cardView: CardView ) {
-            let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
-            tap.delegate = self
-            cardView.addGestureRecognizer(tap)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
+        tap.delegate = self
+        cardView.addGestureRecognizer(tap)
     }
     
     /*
@@ -168,7 +174,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate {
      cardview.addGestureRecognizer(tap)
      cardview.contentMode = .redraw
      
- */
+     */
     
     
     
