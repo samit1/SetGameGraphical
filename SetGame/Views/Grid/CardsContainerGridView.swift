@@ -66,8 +66,6 @@ class CardsContainerGridView: UIView  {
     
     
     /// Called whenever cards should be repositioned.
-    /// It removes all of the existing subviews and
-    /// recalculates where cards should be added back in
     func repositionViews() {
         grid.frame = gridFrame
         grid.cellCount = cards.count
@@ -80,8 +78,11 @@ class CardsContainerGridView: UIView  {
         setNeedsDisplay()
         
     }
+ 
     
 }
+
+
 
 extension UIView {
     func removeAllSubviews() {

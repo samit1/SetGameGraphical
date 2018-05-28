@@ -68,6 +68,12 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         }
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        cardGrid.repositionViews()
+        cardGrid.setNeedsLayout()
+        cardGrid.setNeedsDisplay()
+        updateViewFromModel()
+    }
     // MARK: Button handlers
     
     // when tapped, cards are added on screen
@@ -156,6 +162,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         /// If match, we are going to flip it over. Then the new card is going to be flipped on top of it
         /// If there are still cards, we are going to add new cardViews at that index
         var animating = false
+        
         for (index,setCardView) in cardsOnScreen.enumerated() {
             if let card = setCardView.card, matchedCards.contains(card) {
                 UIView.transition(
