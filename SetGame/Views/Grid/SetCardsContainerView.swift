@@ -19,7 +19,7 @@ class SetCardsContainerView: CardsContainerGridView {
         super.prepareForInterfaceBuilder()
         
         if numberOfViewsForDisplay > 0 {
-            addCards(byamount: numberOfViewsForDisplay, animated: false)
+            addCards(byamount: numberOfViewsForDisplay)
 
             for card in cards as! [SetCardView] {
                 

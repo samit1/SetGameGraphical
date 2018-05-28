@@ -10,26 +10,7 @@ import UIKit
 @IBDesignable
 class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsContainerGridViewDelegate, SetGameDelegate {
     func cardsDidMatch(cards: [Card]) {
-        //        guard var cardsOnScreen = cardGrid.cards as? [SetCardView] else {return}
-        //
-        //        for (index,setCardView) in cardsOnScreen.enumerated() {
-        //            if let card = setCardView.card, cards.contains(card) {
-        //                let completion = {
-        //                    self.updateViewFromModel()
-        //                }
-        //
-        //                cardGrid.fadeAwayCards(at: index,animated: true, completion: completion )
-        //                if game.deck.isEmpty {
-        //                    return
-        //
-        //                }
-        //                cardGrid.addCards()
-        //            }
         
-        //        }
-        
-        
-        //        print(cardsOnScreen)
     }
     
     func didFinishRemoving() {
@@ -57,13 +38,17 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         super.viewDidLoad()
         cardGrid.delegate = self
         game.delegate = self
+        
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         if game.cardsInPlay.isEmpty, cardGrid.cards.isEmpty {
+            
             game.dealCards(forAmount: 12)
-            cardGrid.addCards(byamount: game.cardsInPlay.count, animated: false)
+            //cardGrid.addCards(byamount: game.cardsInPlay.count)
+            dealCards(for: 12)
+            cardGrid.cards.forEach({$0.isFlippedUp = false})
             updateViewFromModel()
         }
     }
@@ -92,20 +77,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         guard tapped.card != nil else {return}
         game.cardSelected(card: tapped.card!)
         
-        /// At end of deck, remove matched cards
-        //        if game.deck.isEmpty {
-        //            for card in game.lastMatchedSet {
-        //                for (index,view) in cardGrid.cards.enumerated() {
-        //                    if let cardSetView = view as? SetCardView {
-        //                        if cardSetView.card == card {
-        //                            cardGrid.removeCard(at: index, animated: true)
-        //                        }
-        //                    }
-        //                }
-        //
-        //            }
-        //
-        //        }
         updateViewFromModel()
         
     }
@@ -145,7 +116,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         game.dealCards(forAmount: 3)
         
         
-        cardGrid.addCards(byamount: 3, animated: true)
+        cardGrid.addCards(byamount: 3)
         updateViewFromModel()
     }
     
@@ -164,10 +135,11 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         var animating = false
         
         for (index,setCardView) in cardsOnScreen.enumerated() {
+            
             if let card = setCardView.card, matchedCards.contains(card) {
                 UIView.transition(
                     with: setCardView,
-                    duration: 5,
+                    duration: 0.3,
                     options: [.transitionFlipFromLeft, .curveEaseOut],
                     animations: {
                         setCardView.isFlippedUp = false
@@ -178,13 +150,13 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                         guard self.game.cardsInPlay.indices.contains(index) else {return}
                         UIView.transition(
                             with: setCardView,
-                            duration: 5,
+                            duration: 0.3,
                             options: [UIViewAnimationOptions.transitionFlipFromTop, UIViewAnimationOptions.curveEaseIn],
                             animations: {
                                 setCardView.isFlippedUp = true
                                 self.setCardViews()
                                 setCardView.card = self.game.cardsInPlay[index]
-                                
+                                animating = false
                         })
                         
                 })
@@ -194,9 +166,36 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         if !animating {
             setCardViews()
         }
+    }
+    
+    
+    private func dealCards(for numCards : Int) {
         
+        for setCardView in cardGrid.cards {
+            
+            UIView.transition(
+                with: setCardView,
+                duration: 0.3,
+                options: [.transitionFlipFromLeft, .curveEaseOut],
+                animations: {
+                    setCardView.isFlippedUp = false
+            },
+                completion: { finished in
+                    UIView.transition(
+                        with: setCardView,
+                        duration: 0.3,
+                        options: [UIViewAnimationOptions.transitionFlipFromTop, UIViewAnimationOptions.curveEaseIn],
+                        animations: {
+                            setCardView.isFlippedUp = true
+                    })
+                    
+            })
+        }
         
     }
+    
+    
+    
     
     private func setCardViews() {
         /// Set card for each cardsOnScreen (if possible)
@@ -205,14 +204,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 guard game.cardsInPlay.indices.contains(index) else {continue}
                 let card = game.cardsInPlay[index]
                 setCardView.card = card
-//                if !setCardView.isFlippedUp {
-//                    UIView.transition(
-//                        with: setCardView,
-//                        duration: 0.5,
-//                        options: .transitionFlipFromRight,
-//                        animations: {setCardView.isFlippedUp = true})
-//                }
-                
                 
                 /// Assigned Target Actions to each view
                 assignTapAction(to: setCardView)

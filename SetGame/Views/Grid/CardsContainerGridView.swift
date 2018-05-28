@@ -52,8 +52,7 @@ class CardsContainerGridView: UIView  {
     
     /// Adds new cards to the UI
     /// - Parameter amount: The number of cards to be added
-    /// - Parameter animated: Bool indicating if the addition should be animated
-    func addCards(byamount amount: Int = 3, animated : Bool = false) {
+    func addCards(byamount amount: Int = 3) {
         let cardsViews = makeCardViews(byAmount: amount)
         
         for card in cardsViews {
