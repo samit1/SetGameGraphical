@@ -171,16 +171,20 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     
     
     private func dealCards(for cards : [CardView]) {
-        cardGrid.cards.forEach({$0.alpha = 0 })
-        
+        cardGrid.cards.forEach({$0.backgroundColor = UIColor.clear})
         /// Reposition all cards
+        
+        
+        
+        
+        
+        
         UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.6,
-            delay: 0,
-            options: .curveEaseInOut,
-            animations: {
+            withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
                 self.cardGrid.repositionViews()
-        }, completion: {finished in var delay = 0.0
+                self.cardGrid.cards.forEach({$0.isFlippedUp = false})
+            }
+        , completion: {finished in var delay = 0.0
             for (index,card) in cards.enumerated() {
                 delay = Double(index) * 0.3 + 0.1
                 card.alpha = 0
@@ -196,11 +200,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 /// Set the card Alpha to 1
                 card.alpha = 1
                 
-                print(card.frame)
-                print(self.cardGrid.frame.minX)
-                print(self.cardGrid.frame.maxY)
                 /// Flip card into destinationFrame
-                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: delay, options: .curveLinear , animations:
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: delay, options: .transitionFlipFromBottom , animations:
                     {card.frame = destinationFrame}
                     , completion: { finished in
                         UIView.transition(with: card, duration: 0.4, options: .transitionFlipFromLeft, animations: {
