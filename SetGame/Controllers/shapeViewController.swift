@@ -171,7 +171,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     
     
     private func dealCards(for cards : [CardView]) {
-        cardGrid.cards.forEach({$0.backgroundColor = UIColor.clear})
+        cards.forEach({$0.backgroundColor = UIColor.clear})
         /// Reposition all cards
         
         
@@ -182,9 +182,10 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         UIViewPropertyAnimator.runningPropertyAnimator(
             withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
                 self.cardGrid.repositionViews()
-                self.cardGrid.cards.forEach({$0.isFlippedUp = false})
             }
-        , completion: {finished in var delay = 0.0
+        , completion: {finished in
+            cards.forEach({$0.isFlippedUp = false})
+            var delay = 0.0
             for (index,card) in cards.enumerated() {
                 delay = Double(index) * 0.3 + 0.1
                 card.alpha = 0
