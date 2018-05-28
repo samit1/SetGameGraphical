@@ -8,15 +8,31 @@
 
 import UIKit
 @IBDesignable
-class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsContainerGridViewDelegate {
-    var isAnimatingCardRemoval: Bool = false { didSet {
-        
+class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsContainerGridViewDelegate, SetGameDelegate {
+    func cardsDidMatch(cards: [Card]) {
+        guard var cardsOnScreen = cardGrid.cards as? [SetCardView] else {return}
+
+        for (index,setCardView) in cardsOnScreen.enumerated() {
+            if let card = setCardView.card {
+                if cards.contains(card) {
+                    
+                    let completion = {
+                        self.updateViewFromModel()
+                    }
+                    
+                    cardGrid.removeCard(at: index,animated: true, completion: completion )
+                    //cardsOnScreen.remove(at: index)
+                }
+            }
+            
         }
+        
+
+        print(cardsOnScreen)
     }
-    var isAnimatingRepositioning: Bool = false {didSet {
-        print(isAnimatingRepositioning)
-        }
-        
+    
+    func didFinishRemoving() {
+        //do something after we removed
     }
     
     
@@ -39,6 +55,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     override func viewDidLoad() {
         super.viewDidLoad()
         cardGrid.delegate = self
+        game.delegate = self
     }
     
     override func viewDidLayoutSubviews() {
@@ -67,7 +84,23 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         guard let tapped = recognizer.view as? SetCardView  else {return}
         guard tapped.card != nil else {return}
         game.cardSelected(card: tapped.card!)
+        
+        /// At end of deck, remove matched cards
+//        if game.deck.isEmpty {
+//            for card in game.lastMatchedSet {
+//                for (index,view) in cardGrid.cards.enumerated() {
+//                    if let cardSetView = view as? SetCardView {
+//                        if cardSetView.card == card {
+//                            cardGrid.removeCard(at: index, animated: true)
+//                        }
+//                    }
+//                }
+//
+//            }
+//
+//        }
         updateViewFromModel()
+        
     }
     
     
@@ -113,31 +146,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     
     // Update the view based on model changes
     private func updateViewFromModel() {
-        /// At end of deck, remove matched cards
-        
-        if game.deck.isEmpty {
-            for card in game.lastMatchedSet {
-                for (index,view) in cardGrid.cards.enumerated() {
-                    if let setCardView = view as? SetCardView {
-                        if setCardView.card == card {
-                            UIViewPropertyAnimator.runningPropertyAnimator(
-                                withDuration: 2.5
-                                , delay: 0.0
-                                , options: .curveEaseOut
-                                , animations: {setCardView.alpha = 0.0}
-                                , completion: {[unowned self] finished in
-                                    self.cardGrid.removeCard(at: index)
-                                    self.cardGrid.updateViewsWithAnimation()
-                                    self.updateViewFromModel()
-                            })
-                        }
-                    }
-                }
-            }
-        }
-        
-
-        
         
         /// Set card for each cardsOnScreen (if possible)
         for (index, cardView) in cardGrid.cards.enumerated() {
@@ -155,7 +163,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 if game.cardsSelected.contains(card) {
                     setCardView.selectState = true
                 } else {
-                    setCardView.selectState = false
+                    setCardView.selectState = false 
                 }
             }
         }
@@ -163,9 +171,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     }
     
     private func assignTapAction(to cardView: CardView ) {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
-        tap.delegate = self
-        cardView.addGestureRecognizer(tap)
+            let tap = UITapGestureRecognizer(target: self, action: #selector(cardBtnTapped))
+            tap.delegate = self
+            cardView.addGestureRecognizer(tap)
     }
     
     /*

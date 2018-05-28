@@ -23,15 +23,16 @@ struct CardDeck {
     
     static  func generateDeckOfCards() -> [Card] {
         var cardSet = [Card]()
-        for num in Card.Number.all {
+        for num in Card.Number.all  {
             for symbol in Card.Symbol.all {
-                for shading in Card.Shading.all {
+                for shading in Card.Shading.all  {
                     for color in Card.Color.all {
                         cardSet.append(Card(num: num, symbol: symbol, shading: shading, color: color))
                     }
                 }
             }
         }
+     //   let first9 = Array(cardSet[0...26])
         return cardSet
 
     }

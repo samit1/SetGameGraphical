@@ -8,15 +8,22 @@
 
 import Foundation
 
+protocol SetGameDelegate {
+    func cardsDidMatch(cards: [Card])
+}
+
 struct SetGame {
     enum shuffleType {
         case allCards
         case cardsOnTable
     }
-    
+
     
     /// The deck of cards
-    private (set) var deck = CardDeck.generateDeckOfCards()
+    private (set) var deck = CardDeck.generateDeckOfCards() 
+
+    /// Delegate of the game. Notified of events
+    var delegate: SetGameDelegate?
     
     
     /// The cards that are currently in play
@@ -51,6 +58,7 @@ struct SetGame {
         didSet {
             if lastMatchedSet.count == 3 {
                 matchedCardsDeck.append(lastMatchedSet)
+                if delegate != nil {delegate?.cardsDidMatch(cards: lastMatchedSet)}
             }
         }
     }

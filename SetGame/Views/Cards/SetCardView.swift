@@ -35,7 +35,7 @@ class SetCardView: CardView {
     /// used to determine spacing in between shapes.
     /// this is a computed helper variable
     private var maxShapeDimension : CGFloat {
-        return self.bounds.width / 4
+        return self.frame.width / 4
     }
     
     /**
@@ -51,14 +51,14 @@ class SetCardView: CardView {
             let halfShapeWidth = maxShapeDimension / 2
             switch card.num {
             case .one:
-                return self.bounds.width / 2 - halfShapeWidth
+                return self.frame.width / 2 - halfShapeWidth
             case .two:
-                let quarter = self.bounds.width / 4
-                let half = self.bounds.width / 2
+                let quarter = self.frame.width / 4
+                let half = self.frame.width / 2
                 let betweenQuarterAndHalf = ((half - quarter) / 2) + quarter
                 return betweenQuarterAndHalf - halfShapeWidth
             case .three:
-                let quarter = self.bounds.width / 4
+                let quarter = self.frame.width / 4
                 return quarter - halfShapeWidth
             }
         }
@@ -77,11 +77,11 @@ class SetCardView: CardView {
         if let card = card, let startPointX = startPointX {
             
             firstDrawPointx = startPointX
-            firstDrawPointY = (self.bounds.height) / 2 - (maxShapeDimension / 2)
+            firstDrawPointY = (self.frame.height) / 2 - (maxShapeDimension / 2)
             
             for _ in 1...card.num.rawValue {
                 frames.append(CGRect(x: firstDrawPointx, y: firstDrawPointY, width: maxShapeDimension, height: maxShapeDimension))
-                firstDrawPointx += maxShapeDimension + (self.bounds.width * Padding.betweenShapesProportion)
+                firstDrawPointx += maxShapeDimension + (self.frame.width * Padding.betweenShapesProportion)
             }
         }
         return frames
