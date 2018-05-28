@@ -26,7 +26,7 @@ class CardView: UIView {
     }
     
     /// The CardView can be flipped up or not flipped up
-    @IBInspectable var isFlippedUp: Bool = true {
+    @IBInspectable var isFlippedUp: Bool = false {
         didSet {
             if isFlippedUp {
                 backgroundColor = BackgroundColors.frontsideColor
