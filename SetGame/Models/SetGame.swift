@@ -100,7 +100,6 @@ struct SetGame {
         if cardsSelected.count == 3, checkForSet(cards: cardsSelected) {
             lastMatchedSet = cardsSelected
             cardsSelected.removeAll()
-            lastMatchedSetReplacedWith.removeAll()
             dealCards()
         }
     }

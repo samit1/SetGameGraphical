@@ -104,6 +104,7 @@ class SetCardView: CardView {
     /// Draws the back of the card
     /// ...which is just setting the view to a color
     override func drawBack() {
+        self.removeAllSubviews()
         self.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
     }
     /// Create a random SetCardView

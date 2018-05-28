@@ -10,26 +10,26 @@ import UIKit
 @IBDesignable
 class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsContainerGridViewDelegate, SetGameDelegate {
     func cardsDidMatch(cards: [Card]) {
-//        guard var cardsOnScreen = cardGrid.cards as? [SetCardView] else {return}
-//
-//        for (index,setCardView) in cardsOnScreen.enumerated() {
-//            if let card = setCardView.card, cards.contains(card) {
-//                let completion = {
-//                    self.updateViewFromModel()
-//                }
-//
-//                cardGrid.fadeAwayCards(at: index,animated: true, completion: completion )
-//                if game.deck.isEmpty {
-//                    return
-//
-//                }
-//                cardGrid.addCards()
-//            }
+        //        guard var cardsOnScreen = cardGrid.cards as? [SetCardView] else {return}
+        //
+        //        for (index,setCardView) in cardsOnScreen.enumerated() {
+        //            if let card = setCardView.card, cards.contains(card) {
+        //                let completion = {
+        //                    self.updateViewFromModel()
+        //                }
+        //
+        //                cardGrid.fadeAwayCards(at: index,animated: true, completion: completion )
+        //                if game.deck.isEmpty {
+        //                    return
+        //
+        //                }
+        //                cardGrid.addCards()
+        //            }
         
-//        }
+        //        }
         
         
-//        print(cardsOnScreen)
+        //        print(cardsOnScreen)
     }
     
     func didFinishRemoving() {
@@ -147,39 +147,64 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     
     // Update the view based on model changes
     private func updateViewFromModel() {
-       // var cardsOnScreen = cardGrid.cards.filter({$0.alpha > 0 })
+        // var cardsOnScreen = cardGrid.cards.filter({$0.alpha > 0 })
         
         let matchedCards = game.lastMatchedSet
         guard let cardsOnScreen = cardGrid.cards as? [SetCardView] else {return}
-
+        
         /// Find the card on the screen that has a match
         /// If match, we are going to flip it over. Then the new card is going to be flipped on top of it
         /// If there are still cards, we are going to add new cardViews at that index
-        
+        var animating = false
         for (index,setCardView) in cardsOnScreen.enumerated() {
-        if let card = setCardView.card, matchedCards.contains(card) {
-            UIView.transition(
-                with: setCardView,
-                duration: 0.5,
-                options: .transitionFlipFromLeft,
-                animations: {setCardView.isFlippedUp = false})
-             //   completion: <#T##((Bool) -> Void)?##((Bool) -> Void)?##(Bool) -> Void#>)
+            if let card = setCardView.card, matchedCards.contains(card) {
+                UIView.transition(
+                    with: setCardView,
+                    duration: 5,
+                    options: [.transitionFlipFromLeft, .curveEaseOut],
+                    animations: {
+                        setCardView.isFlippedUp = false
+                        animating = true
+                        
+                },
+                    completion: { finished in
+                        guard self.game.cardsInPlay.indices.contains(index) else {return}
+                        UIView.transition(
+                            with: setCardView,
+                            duration: 5,
+                            options: [UIViewAnimationOptions.transitionFlipFromTop, UIViewAnimationOptions.curveEaseIn],
+                            animations: {
+                                setCardView.isFlippedUp = true
+                                self.setCardViews()
+                                setCardView.card = self.game.cardsInPlay[index]
+                                
+                        })
+                        
+                })
+                
+            }
         }
+        if !animating {
+            setCardViews()
         }
         
+        
+    }
+    
+    private func setCardViews() {
         /// Set card for each cardsOnScreen (if possible)
         for (index, cardView) in cardGrid.cards.enumerated() {
             if let setCardView = cardView as? SetCardView {
                 guard game.cardsInPlay.indices.contains(index) else {continue}
                 let card = game.cardsInPlay[index]
                 setCardView.card = card
-                if !setCardView.isFlippedUp {
-                    UIView.transition(
-                        with: setCardView,
-                        duration: 0.5,
-                        options: .transitionFlipFromRight,
-                        animations: {setCardView.isFlippedUp = true})
-                }
+//                if !setCardView.isFlippedUp {
+//                    UIView.transition(
+//                        with: setCardView,
+//                        duration: 0.5,
+//                        options: .transitionFlipFromRight,
+//                        animations: {setCardView.isFlippedUp = true})
+//                }
                 
                 
                 /// Assigned Target Actions to each view
@@ -189,11 +214,11 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 if game.cardsSelected.contains(card) {
                     setCardView.selectState = true
                 } else {
-                    setCardView.selectState = false 
+                    setCardView.selectState = false
                 }
                 
                 setCardView.isFlippedUp = true
-
+                
                 
                 
                 UIViewPropertyAnimator.runningPropertyAnimator(
@@ -206,11 +231,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 
             }
         }
-        
-    }
-    
-    private func setCardViews() {
-        
     }
     
     
