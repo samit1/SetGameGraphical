@@ -62,16 +62,7 @@ struct SetGame {
             }
         }
     }
-    
-    
-    /// Variable responsible for keeping track of new cards replaced on table
-    private (set) var lastMatchedSetReplacedWith = [Card]() {
-        didSet {
-            for (i,card) in lastMatchedSetReplacedWith.enumerated() {
-                print("\(i): \(card.description) ")
-            }
-        }
-    }
+
     
     
     
@@ -151,7 +142,6 @@ struct SetGame {
             if lastMatchedSet.contains(card) {
                 guard cardsToDeal.count > 0 else {return}
                 let newCard = cardsToDeal.removeFirst()
-                lastMatchedSetReplacedWith.append(newCard)
                 cardsInPlay[index] = newCard
             }
         }
