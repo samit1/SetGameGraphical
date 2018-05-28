@@ -22,7 +22,7 @@ class CardsContainerGridView: UIView  {
     var delegate: CardsContainerGridViewDelegate?
     
     /// The cards that need to be arranged in a grid
-    var cards = [CardView]() { didSet {updateViewsWithAnimation()}}
+    var cards = [CardView]() //{ didSet {updateViewsWithAnimation()}}
     
     
     /// The grid that is in charge of
@@ -62,40 +62,8 @@ class CardsContainerGridView: UIView  {
         }
         grid.cellCount += amount
         grid.frame = gridFrame
-        updateViewsWithAnimation()
     }
     
-    
-    /// - Parameter index: the index of CardView which you want to remove (if exists)
-    /// - Parameter animated: Bool indicated if removal should be animated
-    /// - Parameter completion: Optional completion to be called after an animation
-    func removeCard(at index: Int, animated : Bool = false, completion : Optional<() -> ()> = nil ) {
-        guard cards.indices.contains(index) else {return}
-        guard grid.cellCount > 0 else {return}
-        let cardView = cards[index]
-        if animated {
-            UIViewPropertyAnimator.runningPropertyAnimator(
-                withDuration: 0.3,
-                delay: 0.0,
-                options: .curveEaseOut,
-                animations: {
-                    cardView.alpha = 0
-            },
-                completion: {[unowned self] finished in
-                    cardView.removeFromSuperview()
-//                    self.grid.cellCount = self.cards.count
-//                    self.cards.remove(at: index)
-                    if let completion = completion {
-                        completion()
-                    }
-                    if self.delegate != nil {self.delegate?.didFinishRemoving()}
-            })
-        } else {
-//            cardView.removeFromSuperview()
-//            cards.remove(at: index)
-//            grid.cellCount -= 1
-        }
-    }
     
     /// Called whenever cards should be repositioned.
     /// It removes all of the existing subviews and
@@ -109,18 +77,8 @@ class CardsContainerGridView: UIView  {
             card.frame = frame
         }
         setNeedsLayout()
+        setNeedsDisplay()
         
-    }
-    
-    func updateViewsWithAnimation() {
-        UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.6,
-            delay: 0,
-            options: .curveEaseInOut,
-            animations: {
-                self.repositionViews()
-        }).startAnimation()
-        //completion: <#T##((UIViewAnimatingPosition) -> Void)?##((UIViewAnimatingPosition) -> Void)?##(UIViewAnimatingPosition) -> Void#>)
     }
     
 }
