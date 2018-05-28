@@ -171,30 +171,49 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     
     
     private func dealCards(for cards : [CardView]) {
-        var delay = 0.0
-        for (index,card) in cards.enumerated() {
-            delay = Double(index) * 0.2 + 0.1
-            card.alpha = 0
-            
-            let destinationFrame = card.frame
-            
-            /// Move card to bottom left of screen while alpha = 0
-            
-            let dx = cardGrid.frame.minX - card.frame.minX
-            let dy = cardGrid.frame.maxY - card.frame.maxY
-            card.transform = CGAffineTransform(translationX: dx, y: dy)
-            
-            /// Set the card Alpha to 1
-            card.alpha = 1
-            
-            
-            /// Flip card into destinationFrame
-            UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.3, delay: delay, options: .transitionFlipFromBottom, animations:
-                {card.frame = destinationFrame}
-            , completion: { finished in
-                self.updateViewFromModel()})
-
-        }
+        cardGrid.cards.forEach({$0.alpha = 0 })
+        
+        /// Reposition all cards
+        UIViewPropertyAnimator.runningPropertyAnimator(
+            withDuration: 0.6,
+            delay: 0,
+            options: .curveEaseInOut,
+            animations: {
+                self.cardGrid.repositionViews()
+        }, completion: {finished in var delay = 0.0
+            for (index,card) in cards.enumerated() {
+                delay = Double(index) * 0.3 + 0.1
+                card.alpha = 0
+                
+                let destinationFrame = card.frame
+                
+                /// Move card to bottom left of screen while alpha = 0
+                
+                let dx = self.cardGrid.frame.minX - card.frame.minX
+                let dy = self.cardGrid.frame.maxY - card.frame.maxY
+                card.transform = CGAffineTransform(translationX: dx, y: dy)
+                
+                /// Set the card Alpha to 1
+                card.alpha = 1
+                
+                print(card.frame)
+                print(self.cardGrid.frame.minX)
+                print(self.cardGrid.frame.maxY)
+                /// Flip card into destinationFrame
+                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: delay, options: .curveLinear , animations:
+                    {card.frame = destinationFrame}
+                    , completion: { finished in
+                        UIView.transition(with: card, duration: 0.4, options: .transitionFlipFromLeft, animations: {
+                            card.isFlippedUp = true
+                        }, completion: {finished in
+                            self.updateViewFromModel()
+                        })
+                })
+                
+            }} )
+        
+        
+        
     }
     
     
@@ -208,6 +227,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
             if let setCardView = cardView as? SetCardView {
                 guard game.cardsInPlay.indices.contains(index) else {continue}
                 guard cardView.alpha == 1 else {continue}
+                guard setCardView.isFlippedUp == true else {continue}
                 let card = game.cardsInPlay[index]
                 setCardView.card = card
                 
@@ -221,17 +241,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                     setCardView.selectState = false
                 }
                 
-                //setCardView.isFlippedUp = true
-                
-                
-                
-                UIViewPropertyAnimator.runningPropertyAnimator(
-                    withDuration: 0.6,
-                    delay: 0,
-                    options: .curveEaseInOut,
-                    animations: {
-                        self.cardGrid.repositionViews()
-                })
                 
             }
         }

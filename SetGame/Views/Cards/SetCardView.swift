@@ -21,6 +21,12 @@ class SetCardView: CardView {
         }
     }
     
+    override var frame: CGRect {
+        didSet {
+            print("set")
+        }
+    }
+    
     override var description: String {
         guard let card = card else {return "empty"}
         
