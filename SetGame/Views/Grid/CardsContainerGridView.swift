@@ -52,15 +52,18 @@ class CardsContainerGridView: UIView  {
     
     /// Adds new cards to the UI
     /// - Parameter amount: The number of cards to be added
-    func addCards(byamount amount: Int = 3) {
+    /// - Return: A reference to added CardViews (for convenience)
+    func addCards(byamount amount: Int = 3) -> [CardView] {
         let cardsViews = makeCardViews(byAmount: amount)
-        
+        var cardsAdded = [CardView]()
         for card in cardsViews {
             addSubview(card)
             cards.append(card)
+            cardsAdded.append(card)
         }
         grid.cellCount += amount
         grid.frame = gridFrame
+        return cardsAdded
     }
     
     

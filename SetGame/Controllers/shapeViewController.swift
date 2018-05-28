@@ -50,8 +50,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
             //dealCards(for: 12)
             //cardGrid.cards.forEach({$0.isFlippedUp = false})
             let cards = cardGrid.cards
-           // updateViewFromModel()
-            dealCards(for: cards)
+            // updateViewFromModel()
+            animateDealCards(for: cards)
         }
     }
     
@@ -59,7 +59,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         cardGrid.repositionViews()
         cardGrid.setNeedsLayout()
         cardGrid.setNeedsDisplay()
-       // updateViewFromModel()
+        // updateViewFromModel()
     }
     // MARK: Button handlers
     
@@ -138,7 +138,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         
         for (index,setCardView) in cardsOnScreen.enumerated() {
             if setCardView.alpha == 0 {
-                dealCards(for: [setCardView])
+                animateDealCards(for: [setCardView])
             } else if setCardView.alpha == 1 {
                 if let card = setCardView.card, matchedCards.contains(card) {
                     UIView.transition(
@@ -160,62 +160,78 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                                     self.setCardViews()
                                     setCardView.card = self.game.cardsInPlay[index]
                             })
-                            
                     })
                 }
             }
-
         }
         setCardViews()
     }
     
     
-    private func dealCards(for cards : [CardView]) {
+    /// Steps:
+    /// - Removes background coloring so view can be moved unnoticed to user
+    /// - Flip card down to trigger backside drawing
+    /// - Move card to bottom left of screen
+    /// - Restore Alpha values. User never sees repositioning because these movements happened with 0 Alpha and clear background
+    /// - Animate repositioning from bottom left to the frame that cardGrid calculated
+    /// - After animation completion, flip card to front side
+    /// - Finally, call updateViewFromModel()
+    private func animateDealCards(for cards : [CardView]) {
+        
+        /// Set card background to clear for new cards so subsequent repositioning is unnoticed by user
         cards.forEach({$0.backgroundColor = UIColor.clear})
-        /// Reposition all cards
         
-        
-        
-        
-        
-        
+        /// Update frames and positioning of cards
         UIViewPropertyAnimator.runningPropertyAnimator(
-            withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
-                self.cardGrid.repositionViews()
-            }
-        , completion: {finished in
-            cards.forEach({$0.isFlippedUp = false})
-            var delay = 0.0
-            for (index,card) in cards.enumerated() {
-                delay = Double(index) * 0.3 + 0.1
-                card.alpha = 0
+            withDuration: 0.4,
+            delay: 0,
+            options: .curveEaseIn,
+            animations: {self.cardGrid.repositionViews()}
+            , completion: {finished in
                 
-                let destinationFrame = card.frame
+                /// Flip card downside
+                cards.forEach({$0.isFlippedUp = false})
                 
-                /// Move card to bottom left of screen while alpha = 0
+                /// Variable to compute a delay so not all cards are dealt at once
+                var delay = 0.0
                 
-                let dx = self.cardGrid.frame.minX - card.frame.minX
-                let dy = self.cardGrid.frame.maxY - card.frame.maxY
-                card.transform = CGAffineTransform(translationX: dx, y: dy)
-                
-                /// Set the card Alpha to 1
-                card.alpha = 1
-                
-                /// Flip card into destinationFrame
-                UIViewPropertyAnimator.runningPropertyAnimator(withDuration: 0.4, delay: delay, options: .transitionFlipFromBottom , animations:
-                    {card.frame = destinationFrame}
-                    , completion: { finished in
-                        UIView.transition(with: card, duration: 0.4, options: .transitionFlipFromLeft, animations: {
-                            card.isFlippedUp = true
-                        }, completion: {finished in
-                            self.updateViewFromModel()
-                        })
-                })
-                
-            }} )
-        
-        
-        
+                for (index,card) in cards.enumerated() {
+                    delay = Double(index) * 0.3 + 0.1
+                    
+                    /// Set alpha to zero
+                    card.alpha = 0
+                    
+                    /// Temporarily hold what the frame of the card should be based on the cardGrid's previous calculations
+                    let destinationFrame = card.frame
+                    
+                    /// Move card to bottom left of screen while alpha = 0
+                    let dx = self.cardGrid.frame.minX - card.frame.minX
+                    let dy = self.cardGrid.frame.maxY - card.frame.maxY
+                    card.transform = CGAffineTransform(translationX: dx, y: dy)
+                    
+                    /// Set the card Alpha to 1
+                    card.alpha = 1
+                    
+                    /// Move card into destinationFrame
+                    /// and then flip the card.
+                    /// Finally, call updateViewFromModel
+                    UIViewPropertyAnimator.runningPropertyAnimator(
+                        withDuration: 0.4,
+                        delay: delay,
+                        options: .transitionFlipFromBottom ,
+                        animations: {card.frame = destinationFrame}
+                        , completion: { finished in
+                            UIView.transition(
+                                with: card,
+                                duration: 0.4,
+                                options: .transitionFlipFromLeft,
+                                animations: {card.isFlippedUp = true}, completion: {finished in
+                                    self.updateViewFromModel()
+                            })
+                    })
+                }
+        }
+        )
     }
     
     
@@ -242,8 +258,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 } else {
                     setCardView.selectState = false
                 }
-                
-                
             }
         }
     }
