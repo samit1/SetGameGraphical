@@ -46,12 +46,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         if game.cardsInPlay.isEmpty, cardGrid.cards.isEmpty {
             
             game.dealCards(forAmount: 12)
-            cardGrid.addCards(byamount: game.cardsInPlay.count)
-            //dealCards(for: 12)
-            //cardGrid.cards.forEach({$0.isFlippedUp = false})
-            let cards = cardGrid.cards
-            // updateViewFromModel()
-            animateDealCards(for: cards)
+            let cardsOnScreen = cardGrid.addCards(byamount: game.cardsInPlay.count)
+            animateDealCards(for: cardsOnScreen)
         }
     }
     
@@ -134,7 +130,6 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         /// Find the card on the screen that has a match
         /// If match, we are going to flip it over. Then the new card is going to be flipped on top of it
         /// If there are still cards, we are going to add new cardViews at that index
-        var animating = false
         
         for (index,setCardView) in cardsOnScreen.enumerated() {
             if setCardView.alpha == 0 {
@@ -157,8 +152,9 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                                 options: [UIViewAnimationOptions.transitionFlipFromTop, UIViewAnimationOptions.curveEaseIn],
                                 animations: {
                                     setCardView.isFlippedUp = true
-                                    self.setCardViews()
+//                                    self.setCardViews()
                                     setCardView.card = self.game.cardsInPlay[index]
+                                   self.animateDealCards(for: [setCardView])
                             })
                     })
                 }
@@ -196,7 +192,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                 var delay = 0.0
                 
                 for (index,card) in cards.enumerated() {
-                    delay = Double(index) * 0.3 + 0.1
+                    delay = (Double(index) + 0.1) * 0.2
                     
                     /// Set alpha to zero
                     card.alpha = 0
@@ -226,7 +222,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
                                 duration: 0.4,
                                 options: .transitionFlipFromLeft,
                                 animations: {card.isFlippedUp = true}, completion: {finished in
-                                    self.updateViewFromModel()
+                                    self.setCardViews()
                             })
                     })
                 }
