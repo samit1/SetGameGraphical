@@ -137,37 +137,36 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         var animating = false
         
         for (index,setCardView) in cardsOnScreen.enumerated() {
-            
-            if let card = setCardView.card, matchedCards.contains(card) {
-                UIView.transition(
-                    with: setCardView,
-                    duration: 0.3,
-                    options: [.transitionFlipFromLeft, .curveEaseOut],
-                    animations: {
-                        setCardView.isFlippedUp = false
-                        animating = true
-                        
-                },
-                    completion: { finished in
-                        guard self.game.cardsInPlay.indices.contains(index) else {return}
-                        UIView.transition(
-                            with: setCardView,
-                            duration: 0.3,
-                            options: [UIViewAnimationOptions.transitionFlipFromTop, UIViewAnimationOptions.curveEaseIn],
-                            animations: {
-                                setCardView.isFlippedUp = true
-                                self.setCardViews()
-                                setCardView.card = self.game.cardsInPlay[index]
-                                animating = false
-                        })
-                        
-                })
-                
+            if setCardView.alpha == 0 {
+                dealCards(for: [setCardView])
+            } else if setCardView.alpha == 1 {
+                if let card = setCardView.card, matchedCards.contains(card) {
+                    UIView.transition(
+                        with: setCardView,
+                        duration: 0.3,
+                        options: [.curveEaseOut],
+                        animations: {
+                            setCardView.alpha = 0.0
+                            
+                    },
+                        completion: { finished in
+                            guard self.game.cardsInPlay.indices.contains(index) else {return}
+                            UIView.transition(
+                                with: setCardView,
+                                duration: 0.3,
+                                options: [UIViewAnimationOptions.transitionFlipFromTop, UIViewAnimationOptions.curveEaseIn],
+                                animations: {
+                                    setCardView.isFlippedUp = true
+                                    self.setCardViews()
+                                    setCardView.card = self.game.cardsInPlay[index]
+                            })
+                            
+                    })
+                }
             }
+
         }
-        if !animating {
-            setCardViews()
-        }
+        setCardViews()
     }
     
     
@@ -203,9 +202,12 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     
     private func setCardViews() {
         /// Set card for each cardsOnScreen (if possible)
+        
+        
         for (index, cardView) in cardGrid.cards.enumerated() {
             if let setCardView = cardView as? SetCardView {
                 guard game.cardsInPlay.indices.contains(index) else {continue}
+                guard cardView.alpha == 1 else {continue}
                 let card = game.cardsInPlay[index]
                 setCardView.card = card
                 
