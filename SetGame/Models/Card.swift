@@ -16,6 +16,7 @@ public struct Card : CustomStringConvertible {
     let symbol : Symbol
     let shading : Shading
     let color : Color
+    var identifier = 99999999999
     public var description: String { return "num = \(num), symbol = \(symbol), shading = \(shading), color = \(color)"  }
     /* a unique identifier is constructed from the num, symbol, shading, and color properties*/
 //    private let identifier: Int
@@ -26,7 +27,7 @@ public struct Card : CustomStringConvertible {
         self.shading = shading
         self.color = color
         
-//        identifier = num.hashValue + symbol.hashValue + shading.hashValue + color.hashValue
+        identifier = Int("\(num.hashValue)\(symbol.hashValue)\(shading.hashValue)\(color.hashValue)")!
         
     }
     
@@ -83,8 +84,13 @@ extension Card : Equatable {
             lhs.symbol == rhs.symbol &&
             lhs.shading == rhs.shading &&
             lhs.color == rhs.color
+    }
+}
+
+extension Card : Hashable {
+    public var hashValue : Int {
         
-        
+        return Int(identifier)
     }
 }
 

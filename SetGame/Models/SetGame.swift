@@ -17,11 +17,11 @@ struct SetGame {
         case allCards
         case cardsOnTable
     }
-
+    
     
     /// The deck of cards
     private (set) var deck = CardDeck.generateDeckOfCards() 
-
+    
     /// Delegate of the game. Notified of events
     var delegate: SetGameDelegate?
     
@@ -31,7 +31,7 @@ struct SetGame {
     private (set) var cardsInPlay = [Card]() {
         didSet {
             for (i,card) in cardsInPlay.enumerated() {
-                print("\(i+1): \(card.description) ")
+//                print("\(i+1): \(card.description) ")
             }
         }
     }
@@ -41,7 +41,7 @@ struct SetGame {
     private (set) var cardsSelected = [Card]() {
         didSet {
             for (i,card) in cardsSelected.enumerated() {
-//                print("\(i): \(card.description) ")
+                //                print("\(i): \(card.description) ")
             }
         }
     }
@@ -59,6 +59,16 @@ struct SetGame {
             if lastMatchedSet.count == 3 {
                 matchedCardsDeck.append(lastMatchedSet)
                 if delegate != nil {delegate?.cardsDidMatch(cards: lastMatchedSet)}
+            }
+        }
+    }
+    
+    
+    /// Variable responsible for keeping track of new cards replaced on table
+    private (set) var lastMatchedSetReplacedWith = [Card]() {
+        didSet {
+            for (i,card) in lastMatchedSetReplacedWith.enumerated() {
+                print("\(i): \(card.description) ")
             }
         }
     }
@@ -99,6 +109,7 @@ struct SetGame {
         if cardsSelected.count == 3, checkForSet(cards: cardsSelected) {
             lastMatchedSet = cardsSelected
             cardsSelected.removeAll()
+            lastMatchedSetReplacedWith.removeAll()
             dealCards()
         }
     }
@@ -117,6 +128,7 @@ struct SetGame {
     
     // TODO: If deck.count > 0, remove matched cards from screen entirely
     mutating func dealCards(forAmount amount : Int = 3) {
+        
         guard amount > 0 else {return} // Check amount to draw is positive
         guard deck.count >= amount else {
             for card in lastMatchedSet {
@@ -138,7 +150,9 @@ struct SetGame {
         for (index,card) in cardsInPlay.enumerated() {
             if lastMatchedSet.contains(card) {
                 guard cardsToDeal.count > 0 else {return}
-                cardsInPlay[index] = cardsToDeal.removeFirst()
+                let newCard = cardsToDeal.removeFirst()
+                lastMatchedSetReplacedWith.append(newCard)
+                cardsInPlay[index] = newCard
             }
         }
         
@@ -152,7 +166,7 @@ struct SetGame {
     init() {
         startNewGame()
     }
-
+    
     
     mutating public func startNewGame() {
         deck.removeAll()
