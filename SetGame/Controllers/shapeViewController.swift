@@ -62,6 +62,7 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
     // when tapped, cards are added on screen
     @IBAction func dealMoreCardsBtnTapped(_ sender: UIButton) {
         addCards()
+        
     }
     
     
@@ -114,7 +115,8 @@ class shapeViewController: UIViewController, UIGestureRecognizerDelegate, CardsC
         game.dealCards(forAmount: 3)
         
         
-        cardGrid.addCards(byamount: 3)
+        var newCards = cardGrid.addCards(byamount: 3)
+        animateDealCards(for: newCards)
         updateViewFromModel()
     }
     
